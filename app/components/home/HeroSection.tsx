@@ -361,7 +361,7 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href="#experiencia"
+              href="#experiencias"
               className={`${styles.secondaryButton} ${styles.animatedButton}`}
               style={
                 {

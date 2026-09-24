@@ -1,6 +1,5 @@
 
 
-import AppSection from "./components/AppSection/AppSection";
 import ElClubSection from "./components/ElClubSection/ElClubSection";
 import FaqSection from "./components/Faq/FaqSection";
 import HeroSection from "./components/home/HeroSection";
@@ -32,8 +31,6 @@ export default function HomePage() {
       <HowItWorksSection />
 
       <OwnerSection />
-
-      <AppSection />
 
       {/* <CinematicExperience /> */}
 

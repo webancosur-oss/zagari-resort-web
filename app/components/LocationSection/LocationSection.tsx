@@ -418,7 +418,7 @@ export default function UbicacionSection() {
       if (!autoRunRef.current) return;
 
       // El último punto se hace visible e iluminado solamente al completar
-      // el recorrido. Después de ello se abre el popup de Zagari.
+      // el recorrido. Después de ello se abre el popup de ANCOSUR.
       destinationMarkerRef.current
         ?.getElement()
         .classList.add(styles.destinationArrived);
@@ -680,9 +680,9 @@ export default function UbicacionSection() {
 
     mountedRef.current = true;
 
-    const token = process.env.MAPBOX_TOKEN;
+    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
     if (!token) {
-      setRouteError("Falta MAPBOX_TOKEN.");
+      setRouteError("Falta NEXT_PUBLIC_MAPBOX_TOKEN.");
       return;
     }
 
@@ -714,11 +714,11 @@ export default function UbicacionSection() {
     destinationElement.className = styles.destinationMarker;
     destinationElement.setAttribute("role", "button");
     destinationElement.setAttribute("tabindex", "0");
-    destinationElement.setAttribute("aria-label", "Ver información de Zagari Resort Club");
+    destinationElement.setAttribute("aria-label", "Ver información de ANCOSUR Inmobiliaria");
     destinationElement.innerHTML = `
       <span class="${styles.destinationPulse}"></span>
       <span class="${styles.destinationCore}"><span class="${styles.destinationDiamond}"></span></span>
-      <span class="${styles.destinationLabel}">ZAGARI</span>
+      <span class="${styles.destinationLabel}">ANCOSUR</span>
     `;
 
     const destinationMarker = new mapboxgl.Marker({
@@ -740,13 +740,13 @@ export default function UbicacionSection() {
         <img
           class="${styles.popupImage}"
           src="${MAP_ASSETS.popupImage}"
-          alt="Zagari Resort Club"
+          alt="ANCOSUR Inmobiliaria"
           loading="lazy"
         />
         <div class="${styles.popupBody}">
           <span class="${styles.popupEyebrow}">DESTINO</span>
-          <strong>ZAGARI RESORT CLUB</strong>
-          <span>San Ramón · Chanchamayo · Junín</span>
+          <strong>ANCOSUR INMOBILIARIA</strong>
+          <span>Av. San Carlos 1481 · Huancayo · Junín</span>
         </div>
       </div>
     `);
@@ -1097,12 +1097,12 @@ export default function UbicacionSection() {
 
           <h2 id="ubicacion-title" className={styles.title}>
             El camino hacia
-            <em>Zagari comienza aquí.</em>
+            <em>ANCOSUR comienza aquí.</em>
           </h2>
 
           <p className={styles.description}>
-            Recorre virtualmente el camino desde la Plaza de Armas de San Ramón
-            hasta Zagari Resort Club. La cámara avanza en primera persona y el
+            Recorre virtualmente el camino desde Mallplaza Huancayo
+            hasta ANCOSUR Inmobiliaria. La cámara avanza en primera persona y el
             trazado se ilumina sobre la carretera.
           </p>
 
@@ -1112,8 +1112,8 @@ export default function UbicacionSection() {
             </span>
             <div className={styles.infoCopy}>
               <span className={styles.infoLabel}>PUNTO DE PARTIDA</span>
-              <strong>Plaza de Armas de San Ramón</strong>
-              <p>San Ramón · Chanchamayo · Junín</p>
+              <strong>Mallplaza Huancayo</strong>
+              <p>Huancayo · Junín</p>
             </div>
           </div>
 

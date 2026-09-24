@@ -9,109 +9,121 @@ import {
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import styles from "./Navbar.module.css";
 
 /* ==========================================================
-   NAVIGATION
-   Los enlaces con /#... llevan a secciones de la página principal.
-   Las páginas independientes conservan su ruta.
+   SINGLE PAGE NAVIGATION
+
+   Todas las secciones pertenecen a la HOME (/).
+   La única ruta externa del navbar es /contacto.
 ========================================================== */
 
 const leftNavigation = [
-  // {
-  //   label: "Inicio",
-  //   href: "/",
-  // },
-  {
-    label: "El Club",
-    href: "/#el-club",
-  },
-  {
-    label: "Experiencias",
-    href: "/#experiencias",
-  },
+  { label: "Inicio", href: "#inicio" },
+  { label: "El Club", href: "#el-club" },
+  { label: "Experiencias", href: "#experiencias" },
+  { label: "Propietarios", href: "#propietarios" },
 ] as const;
 
 const rightNavigation = [
-  {
-    label: "Membresías",
-    href: "/#membresias",
-  },
-  {
-    label: "Ubicación",
-    href: "/#ubicacion",
-  },
+  { label: "Membresías", href: "#membresias" },
+  { label: "Ubicación", href: "#ubicacion" },
 ] as const;
 
 const mobileNavigation = [
-  // {
-  //   label: "Inicio",
-  //   href: "/",
-  // },
-  {
-    label: "El Club",
-    href: "/#el-club",
-  },
-  {
-    label: "Experiencias",
-    href: "/#experiencias",
-  },
-  {
-    label: "Membresías",
-    href: "/#membresias",
-  },
-  {
-    label: "Puntos Zagari",
-    href: "/#puntos-zagari",
-  },
-  {
-    label: "Propietarios",
-    href: "/#propietarios",
-  },
-  {
-    label: "App Zagari",
-    href: "/#app-zagari",
-  },
-  {
-    label: "Cómo funciona",
-    href: "/#como-funciona",
-  },
-  {
-    label: "Ubicación",
-    href: "/#ubicacion",
-  },
-  {
-    label: "Preguntas frecuentes",
-    href: "/faq",
-  },
+  { label: "Inicio", href: "#inicio" },
+  { label: "El Club", href: "#el-club" },
+  { label: "Experiencias", href: "#experiencias" },
+  { label: "Membresías", href: "#membresias" },
+  { label: "Puntos Zagari", href: "#puntos-zagari" },
+  { label: "Cómo funciona", href: "#como-funciona" },
+  { label: "Propietarios", href: "#propietarios" },
+  { label: "Ubicación", href: "#ubicacion" },
+  { label: "Manifiesto", href: "#manifesto" },
+  { label: "Preguntas frecuentes", href: "#preguntas-frecuentes" },
 ] as const;
 
-const HOME_SECTION_HASHES = new Set([
-  "#el-club",
-  "#experiencias",
-  "#membresias",
-  "#puntos-zagari",
-  "#propietarios",
-  "#app-zagari",
-  "#como-funciona",
-  "#ubicacion",
-]);
+/*
+ * Todas las secciones reales de la single page.
+ * No se usa /faq ni ninguna otra ruta para estas secciones.
+ */
+const HOME_SECTIONS = [
+  "el-club",
+  "experiencias",
+  "membresias",
+  "puntos-zagari",
+  "como-funciona",
+  "propietarios",
+  "ubicacion",
+  "preguntas-frecuentes",
+  "manifesto",
+] as const;
 
-const SCROLL_STORAGE_KEY = "zagari-navbar-scroll";
+type SectionId = (typeof HOME_SECTIONS)[number];
 
-function normalizePath(pathname: string) {
-  if (!pathname) return "/";
-  if (pathname.length > 1 && pathname.endsWith("/")) {
-    return pathname.slice(0, -1);
-  }
-  return pathname;
+const SCROLL_OFFSET_DESKTOP = 108;
+const SCROLL_OFFSET_MOBILE = 82;
+
+function getScrollOffset() {
+  return window.innerWidth <= 700
+    ? SCROLL_OFFSET_MOBILE
+    : SCROLL_OFFSET_DESKTOP;
 }
 
-function getHashFromHref(href: string) {
-  const hashIndex = href.indexOf("#");
-  return hashIndex >= 0 ? href.slice(hashIndex) : "";
+function getActiveSection(): string {
+  const activationLine = getScrollOffset() + window.innerHeight * 0.25;
+  let active = "";
+  let closest = Number.POSITIVE_INFINITY;
+
+  for (const id of HOME_SECTIONS) {
+    const element = document.getElementById(id);
+    if (!element) continue;
+
+    const rect = element.getBoundingClientRect();
+
+    if (rect.top <= activationLine && rect.bottom > getScrollOffset()) {
+      const distance = Math.abs(rect.top - activationLine);
+      if (distance < closest) {
+        closest = distance;
+        active = id;
+      }
+    }
+  }
+
+  if (active) return active;
+
+  // Si ninguna sección está dentro de la zona activa, estamos en el inicio.
+  return window.scrollY < activationLine ? "inicio" : "";
+}
+
+function scrollToSection(id: string, updateUrl = true) {
+  if (id === "inicio") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (updateUrl) {
+      window.history.pushState({}, "", window.location.pathname);
+    }
+
+    return;
+  }
+
+  const element = document.getElementById(id);
+  if (!element) return;
+
+  const top =
+    element.getBoundingClientRect().top +
+    window.scrollY -
+    getScrollOffset();
+
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: "smooth",
+  });
+
+  if (updateUrl) {
+    window.history.pushState({}, "", `#${id}`);
+  }
 }
 
 /* ==========================================================
@@ -119,11 +131,9 @@ function getHashFromHref(href: string) {
 ========================================================== */
 
 export default function Navbar() {
-  const pathname = usePathname();
-
   const frameRef = useRef<number | null>(null);
-  const restoreFrameRef = useRef<number | null>(null);
-  const previousPathRef = useRef(pathname);
+  const footerFrameRef = useRef<number | null>(null);
+  const initialHashFrameRef = useRef<number | null>(null);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -144,22 +154,88 @@ export default function Navbar() {
     )}`;
 
   /* ========================================================
-     NORMAL SCROLL
+     NORMAL SCROLL + ACTIVE SECTION
+
+     La navegación es una single page. El estado activo se
+     determina por la posición real de cada sección, no por
+     usePathname ni por rutas de Next.js.
   ======================================================== */
 
   useEffect(() => {
     const update = () => {
       setIsScrolled(window.scrollY > 70);
+
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
+
+      frameRef.current = requestAnimationFrame(() => {
+        const activeId = getActiveSection();
+        setActiveHash(activeId ? `#${activeId}` : "");
+      });
     };
 
     update();
 
-    window.addEventListener("scroll", update, {
-      passive: true,
-    });
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    window.addEventListener("hashchange", update);
 
     return () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
+
       window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      window.removeEventListener("hashchange", update);
+    };
+  }, []);
+
+  /* ========================================================
+     INITIAL HASH
+
+     Si el usuario entra directamente a /#propietarios,
+     esperamos a que la single page esté montada y hacemos
+     scroll a la sección.
+  ======================================================== */
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const id = decodeURIComponent(hash.slice(1));
+    if (id !== "inicio" && !HOME_SECTIONS.includes(id as SectionId)) {
+      return;
+    }
+
+    let attempts = 0;
+    let frame = 0;
+
+    const restore = () => {
+      const element = id === "inicio"
+        ? document.body
+        : document.getElementById(id);
+
+      if (element) {
+        scrollToSection(id, false);
+        setActiveHash(id === "inicio" ? "" : `#${id}`);
+        return;
+      }
+
+      attempts += 1;
+      if (attempts < 30) {
+        frame = requestAnimationFrame(restore);
+      }
+    };
+
+    initialHashFrameRef.current = requestAnimationFrame(restore);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      if (initialHashFrameRef.current !== null) {
+        cancelAnimationFrame(initialHashFrameRef.current);
+      }
     };
   }, []);
 
@@ -185,153 +261,27 @@ export default function Navbar() {
     };
 
     const requestUpdate = () => {
-      if (frameRef.current !== null) {
-        cancelAnimationFrame(frameRef.current);
+      if (footerFrameRef.current !== null) {
+        cancelAnimationFrame(footerFrameRef.current);
       }
 
-      frameRef.current = requestAnimationFrame(updateFooterDock);
+      footerFrameRef.current = requestAnimationFrame(updateFooterDock);
     };
 
     updateFooterDock();
 
-    window.addEventListener("scroll", requestUpdate, {
-      passive: true,
-    });
-
+    window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
 
     return () => {
-      if (frameRef.current !== null) {
-        cancelAnimationFrame(frameRef.current);
+      if (footerFrameRef.current !== null) {
+        cancelAnimationFrame(footerFrameRef.current);
       }
 
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
   }, []);
-
-  /* ========================================================
-     HASH
-  ======================================================== */
-
-  useEffect(() => {
-    const updateHash = () => {
-      setActiveHash(window.location.hash);
-    };
-
-    updateHash();
-
-    window.addEventListener("hashchange", updateHash);
-
-    return () => {
-      window.removeEventListener("hashchange", updateHash);
-    };
-  }, []);
-
-  /* ========================================================
-     HASH SCROLL
-
-     Permite que /#seccion funcione correctamente incluso
-     después de venir desde otra página.
-  ======================================================== */
-
-  useEffect(() => {
-    if (pathname !== "/") return;
-
-    const hash = window.location.hash;
-
-    if (!hash || !HOME_SECTION_HASHES.has(hash)) return;
-
-    const restore = () => {
-      const element = document.getElementById(hash.slice(1));
-
-      if (!element) return;
-
-      const headerOffset = window.innerWidth <= 700 ? 74 : 94;
-
-      const top =
-        element.getBoundingClientRect().top +
-        window.scrollY -
-        headerOffset;
-
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: "auto",
-      });
-    };
-
-    if (restoreFrameRef.current !== null) {
-      cancelAnimationFrame(restoreFrameRef.current);
-    }
-
-    restoreFrameRef.current = requestAnimationFrame(() => {
-      restoreFrameRef.current = requestAnimationFrame(restore);
-    });
-
-    return () => {
-      if (restoreFrameRef.current !== null) {
-        cancelAnimationFrame(restoreFrameRef.current);
-      }
-    };
-  }, [pathname, activeHash]);
-
-  /* ========================================================
-     SCROLL POSITION / BACK-FORWARD NAVIGATION
-
-     Si el usuario está dentro de una sección:
-       sección -> página -> atrás
-
-     el navegador vuelve a la URL anterior y esta lógica
-     mantiene/restaura la posición correspondiente.
-  ======================================================== */
-
-  useEffect(() => {
-    const previousPath = previousPathRef.current;
-
-    if (previousPath !== pathname) {
-      const currentKey = `${previousPath}${window.location.hash || ""}`;
-
-      try {
-        sessionStorage.setItem(
-          `${SCROLL_STORAGE_KEY}:${currentKey}`,
-          String(window.scrollY),
-        );
-      } catch {
-        // sessionStorage puede estar bloqueado en ciertos entornos.
-      }
-
-      previousPathRef.current = pathname;
-    }
-  }, [pathname]);
-
-  useEffect(() => {
-    const saveCurrentPosition = () => {
-      const key = `${pathname}${window.location.hash || ""}`;
-
-      try {
-        sessionStorage.setItem(
-          `${SCROLL_STORAGE_KEY}:${key}`,
-          String(window.scrollY),
-        );
-      } catch {
-        // No interrumpir la navegación si storage no está disponible.
-      }
-    };
-
-    window.addEventListener("beforeunload", saveCurrentPosition);
-
-    return () => {
-      window.removeEventListener("beforeunload", saveCurrentPosition);
-    };
-  }, [pathname]);
-
-  /* ========================================================
-     CLOSE MENU WHEN ROUTE CHANGES
-  ======================================================== */
-
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
 
   /* ========================================================
      BODY LOCK
@@ -369,68 +319,33 @@ export default function Navbar() {
   }, []);
 
   /* ========================================================
-     ACTIVE
+     NAVIGATION
   ======================================================== */
 
-  const isActive = (href: string) => {
-    const [route, hash] = href.split("#");
-    const currentPath = normalizePath(pathname);
+  const handleNavigationClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    event.preventDefault();
+    setIsMenuOpen(false);
 
-    /* HOME */
-    if (href === "/") {
-      return currentPath === "/" && !activeHash;
-    }
-
-    /* HOME SECTION */
-    if (hash && (!route || route === "/")) {
-      return (
-        currentPath === "/" &&
-        activeHash === `#${hash}`
-      );
-    }
-
-    /* NORMAL ROUTE */
-    if (route) {
-      const normalizedRoute = normalizePath(route);
-
-      return (
-        currentPath === normalizedRoute ||
-        currentPath.startsWith(`${normalizedRoute}/`)
-      );
-    }
-
-    return false;
+    const id = href.replace(/^#/, "");
+    scrollToSection(id);
   };
 
-  /* ========================================================
-     NAVIGATION HANDLER
-
-     Para anchors de la home no hacemos navegación manual:
-     Next <Link> mantiene la navegación SPA y el hash queda
-     en la URL. Esto permite volver con Back a la sección.
-  ======================================================== */
-
-  const handleNavigationClick = (href: string) => {
-    if (typeof window === "undefined") return;
-
-    const hash = getHashFromHref(href);
-
-    try {
-      const key = `${window.location.pathname}${window.location.hash || ""}`;
-
-      sessionStorage.setItem(
-        `${SCROLL_STORAGE_KEY}:${key}`,
-        String(window.scrollY),
-      );
-    } catch {
-      // No bloquear navegación.
-    }
-
-    if (hash) {
-      setActiveHash(hash);
-    }
-
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
     setIsMenuOpen(false);
+    scrollToSection("inicio");
+  };
+
+  const isActive = (href: string) => {
+    const hash = href.startsWith("#") ? href : "";
+
+    // IMPORTANTE: esta función se ejecuta durante el render.
+    // Nunca accedemos a window aquí porque el componente también
+    // puede renderizarse en el servidor durante SSR/hydration.
+    return activeHash === hash;
   };
 
   const closeMenu = () => {
@@ -445,33 +360,19 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ===================================================
-          NAVBAR
-      ==================================================== */}
-
       <header
         className={`${styles.header} ${
-          isScrolled
-            ? styles.headerScrolled
-            : styles.headerTop
-        } ${
-          showFooterNav
-            ? styles.footerDocked
-            : ""
-        }`}
+          isScrolled ? styles.headerScrolled : styles.headerTop
+        } ${showFooterNav ? styles.footerDocked : ""}`}
       >
         <div className={styles.notch}>
           {showFooterNav ? (
-            /* ===============================================
-               FOOTER NAVBAR MODE
-            ================================================ */
-
             <div className={styles.footerNav}>
               <Link
-                href="/"
+                href="#inicio"
                 className={styles.footerNavLogo}
                 aria-label="Zagari Resort Club"
-                onClick={() => handleNavigationClick("/")}
+                onClick={handleLogoClick}
               >
                 <Image
                   src="/assets/brand/zagari-logo-dark.svg"
@@ -502,10 +403,7 @@ export default function Navbar() {
             </div>
           ) : (
             <>
-              {/* =============================================
-                  DESKTOP LEFT
-              ============================================== */}
-
+              {/* DESKTOP LEFT */}
               <nav
                 className={styles.leftNavigation}
                 aria-label="Navegación principal"
@@ -521,28 +419,24 @@ export default function Navbar() {
                       className={`${styles.navLink} ${
                         active ? styles.navLinkActive : ""
                       }`}
-                      onClick={() =>
-                        handleNavigationClick(item.href)
+                      onClick={(event) =>
+                        handleNavigationClick(event, item.href)
                       }
                     >
                       {item.label}
-
                       <span className={styles.navLine} />
                     </Link>
                   );
                 })}
               </nav>
 
-              {/* =============================================
-                  LOGO CENTER
-              ============================================== */}
-
+              {/* LOGO */}
               <Link
-                href="/"
+                href="#inicio"
                 scroll={false}
                 className={styles.logo}
-                aria-label="Zagari Resort Club"
-                onClick={() => handleNavigationClick("/")}
+                aria-label="Ir al inicio"
+                onClick={handleLogoClick}
               >
                 <Image
                   src="/assets/brand/zagari-logo-dark.svg"
@@ -554,10 +448,7 @@ export default function Navbar() {
                 />
               </Link>
 
-              {/* =============================================
-                  DESKTOP RIGHT
-              ============================================== */}
-
+              {/* DESKTOP RIGHT */}
               <div className={styles.rightArea}>
                 <nav
                   className={styles.rightNavigation}
@@ -572,101 +463,72 @@ export default function Navbar() {
                         href={item.href}
                         scroll={false}
                         className={`${styles.navLink} ${
-                          active
-                            ? styles.navLinkActive
-                            : ""
+                          active ? styles.navLinkActive : ""
                         }`}
-                        onClick={() =>
-                          handleNavigationClick(item.href)
+                        onClick={(event) =>
+                          handleNavigationClick(event, item.href)
                         }
                       >
                         {item.label}
-
                         <span className={styles.navLine} />
                       </Link>
                     );
                   })}
                 </nav>
 
-                <Link
+                {/* ÚNICA RUTA REAL DEL NAVBAR */}
+                {/* <Link
                   href="/contacto"
                   className={styles.contactButton}
                 >
                   <span>Agendar visita</span>
-
                   <span className={styles.contactIcon}>
-                    <ArrowRight
-                      size={15}
-                      weight="bold"
-                    />
+                    <ArrowRight size={15} weight="bold" />
                   </span>
-                </Link>
+                </Link> */}
               </div>
 
-              {/* =============================================
-                  MOBILE BUTTON
-              ============================================== */}
-
+              {/* MOBILE BUTTON */}
               <button
                 type="button"
                 className={styles.menuButton}
-                aria-label={
-                  isMenuOpen
-                    ? "Cerrar menú"
-                    : "Abrir menú"
-                }
+                aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
                 aria-expanded={isMenuOpen}
                 aria-controls="zagari-menu"
-                onClick={() =>
-                  setIsMenuOpen((current) => !current)
-                }
+                onClick={() => setIsMenuOpen((current) => !current)}
               >
-                {isMenuOpen ? (
-                  <X size={20} />
-                ) : (
-                  <List size={22} />
-                )}
+                {isMenuOpen ? <X size={20} /> : <List size={22} />}
               </button>
             </>
           )}
         </div>
       </header>
 
-      {/* ===================================================
-          BACKDROP
-      ==================================================== */}
-
+      {/* BACKDROP */}
       <button
         type="button"
         className={`${styles.backdrop} ${
-          isMenuOpen
-            ? styles.backdropVisible
-            : ""
+          isMenuOpen ? styles.backdropVisible : ""
         }`}
         aria-label="Cerrar menú"
         onClick={closeMenu}
         tabIndex={isMenuOpen ? 0 : -1}
       />
 
-      {/* ===================================================
-          MOBILE MENU
-      ==================================================== */}
-
+      {/* MOBILE MENU */}
       <aside
         id="zagari-menu"
         className={`${styles.mobileMenu} ${
-          isMenuOpen
-            ? styles.mobileMenuOpen
-            : ""
+          isMenuOpen ? styles.mobileMenuOpen : ""
         }`}
         aria-hidden={!isMenuOpen}
       >
         <div className={styles.mobileHeader}>
           <Link
-            href="/"
+            href="#inicio"
             scroll={false}
             className={styles.mobileLogo}
-            onClick={() => handleNavigationClick("/")}
+            onClick={handleLogoClick}
             aria-label="Ir al inicio"
           >
             <Image
@@ -690,13 +552,11 @@ export default function Navbar() {
 
         <div className={styles.mobileIntro}>
           <span>Zagari Resort Club</span>
-
           <h2>
             Vive diferente
             <br />
             en San Ramón.
           </h2>
-
           <p>
             Naturaleza, descanso,
             lotes y experiencias
@@ -716,21 +576,17 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 scroll={false}
-                onClick={() =>
-                  handleNavigationClick(item.href)
+                onClick={(event) =>
+                  handleNavigationClick(event, item.href)
                 }
                 className={`${styles.mobileLink} ${
-                  active
-                    ? styles.mobileLinkActive
-                    : ""
+                  active ? styles.mobileLinkActive : ""
                 }`}
               >
                 <span className={styles.mobileIndex}>
                   {String(index + 1).padStart(2, "0")}
                 </span>
-
                 <strong>{item.label}</strong>
-
                 <span className={styles.mobileArrow}>
                   <ArrowRight size={17} />
                 </span>
@@ -745,7 +601,6 @@ export default function Navbar() {
           onClick={closeMenu}
         >
           <span>Solicitar información</span>
-
           <span className={styles.mobileContactIcon}>
             <ArrowRight size={17} weight="bold" />
           </span>
@@ -759,7 +614,6 @@ export default function Navbar() {
           onClick={closeMenu}
         >
           <WhatsappLogo size={18} weight="fill" />
-
           <span>Hablar por WhatsApp</span>
         </a>
 
