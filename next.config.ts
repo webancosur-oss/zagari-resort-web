@@ -8,9 +8,9 @@ import type {
 const nextConfig: NextConfig = {
 
    env: {
-    NEXT_PUBLIC_MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
+    MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
   },
-  
+
   allowedDevOrigins: [
     "192.168.1.131"
   ],
