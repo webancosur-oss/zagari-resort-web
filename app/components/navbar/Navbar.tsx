@@ -1,51 +1,43 @@
+/* Navbar.tsx */
 "use client";
 
 import {
   ArrowRight,
-  ArrowUp,
   List,
   WhatsappLogo,
   X,
 } from "@phosphor-icons/react";
-
 import Image from "next/image";
 import Link from "next/link";
-
-import {
-  usePathname,
-} from "next/navigation";
-
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Navbar.module.css";
 
 /* ==========================================================
-   DESKTOP NAVIGATION
+   NAVIGATION
+   Los enlaces con /#... llevan a secciones de la página principal.
+   Las páginas independientes conservan su ruta.
 ========================================================== */
 
 const leftNavigation = [
-  {
-    label: "Inicio",
-    href: "/",
-  },
-  {
-    label: "Proyecto",
-    href: "/proyecto",
-  },
   // {
-  //   label: "Lotes",
-  //   href: "/lotes",
+  //   label: "Inicio",
+  //   href: "/",
   // },
+  {
+    label: "El Club",
+    href: "/#el-club",
+  },
+  {
+    label: "Experiencias",
+    href: "/#experiencias",
+  },
 ] as const;
 
 const rightNavigation = [
   {
-    label: "Nosotros",
-    href: "/nosotros",
+    label: "Membresías",
+    href: "/#membresias",
   },
   {
     label: "Ubicación",
@@ -53,25 +45,38 @@ const rightNavigation = [
   },
 ] as const;
 
-/* ==========================================================
-   MOBILE NAVIGATION
-
-   Independiente del desktop para controlar
-   orden y páginas visibles en mobile.
-========================================================== */
-
 const mobileNavigation = [
+  // {
+  //   label: "Inicio",
+  //   href: "/",
+  // },
   {
-    label: "Inicio",
-    href: "/",
+    label: "El Club",
+    href: "/#el-club",
   },
   {
-    label: "Proyecto",
-    href: "/proyecto",
+    label: "Experiencias",
+    href: "/#experiencias",
   },
   {
-    label: "Nosotros",
-    href: "/nosotros",
+    label: "Membresías",
+    href: "/#membresias",
+  },
+  {
+    label: "Puntos Zagari",
+    href: "/#puntos-zagari",
+  },
+  {
+    label: "Propietarios",
+    href: "/#propietarios",
+  },
+  {
+    label: "App Zagari",
+    href: "/#app-zagari",
+  },
+  {
+    label: "Cómo funciona",
+    href: "/#como-funciona",
   },
   {
     label: "Ubicación",
@@ -83,47 +88,54 @@ const mobileNavigation = [
   },
 ] as const;
 
+const HOME_SECTION_HASHES = new Set([
+  "#el-club",
+  "#experiencias",
+  "#membresias",
+  "#puntos-zagari",
+  "#propietarios",
+  "#app-zagari",
+  "#como-funciona",
+  "#ubicacion",
+]);
+
+const SCROLL_STORAGE_KEY = "zagari-navbar-scroll";
+
+function normalizePath(pathname: string) {
+  if (!pathname) return "/";
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    return pathname.slice(0, -1);
+  }
+  return pathname;
+}
+
+function getHashFromHref(href: string) {
+  const hashIndex = href.indexOf("#");
+  return hashIndex >= 0 ? href.slice(hashIndex) : "";
+}
+
 /* ==========================================================
    COMPONENT
 ========================================================== */
 
 export default function Navbar() {
-  const pathname =
-    usePathname();
+  const pathname = usePathname();
 
-  const frameRef =
-    useRef<number | null>(
-      null,
-    );
+  const frameRef = useRef<number | null>(null);
+  const restoreFrameRef = useRef<number | null>(null);
+  const previousPathRef = useRef(pathname);
 
-  const [
-    isScrolled,
-    setIsScrolled,
-  ] = useState(false);
-
-  const [
-    isMenuOpen,
-    setIsMenuOpen,
-  ] = useState(false);
-
-  const [
-    activeHash,
-    setActiveHash,
-  ] = useState("");
-
-  const [
-    isFooterDocked,
-    setIsFooterDocked,
-  ] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState("");
+  const [isFooterDocked, setIsFooterDocked] = useState(false);
 
   /* ========================================================
      WHATSAPP
   ======================================================== */
 
   const whatsappNumber =
-    process.env
-      .NEXT_PUBLIC_ZAGARI_WHATSAPP ||
-    "971069763";
+    process.env.NEXT_PUBLIC_ZAGARI_WHATSAPP || "971069763";
 
   const whatsappUrl =
     `https://wa.me/${whatsappNumber}` +
@@ -137,26 +149,17 @@ export default function Navbar() {
 
   useEffect(() => {
     const update = () => {
-      setIsScrolled(
-        window.scrollY > 70,
-      );
+      setIsScrolled(window.scrollY > 70);
     };
 
     update();
 
-    window.addEventListener(
-      "scroll",
-      update,
-      {
-        passive: true,
-      },
-    );
+    window.addEventListener("scroll", update, {
+      passive: true,
+    });
 
     return () => {
-      window.removeEventListener(
-        "scroll",
-        update,
-      );
+      window.removeEventListener("scroll", update);
     };
   }, []);
 
@@ -165,87 +168,45 @@ export default function Navbar() {
   ======================================================== */
 
   useEffect(() => {
-    const updateFooterDock =
-      () => {
-        const footer =
-          document.querySelector<HTMLElement>(
-            "[data-zagari-footer]",
-          );
+    const updateFooterDock = () => {
+      const footer =
+        document.querySelector<HTMLElement>("[data-zagari-footer]");
 
-        if (!footer) {
-          setIsFooterDocked(
-            false,
-          );
+      if (!footer) {
+        setIsFooterDocked(false);
+        return;
+      }
 
-          return;
-        }
+      const rect = footer.getBoundingClientRect();
+      const reachedTop = rect.top <= 12;
+      const footerVisible = rect.bottom > 0;
 
-        const rect =
-          footer.getBoundingClientRect();
+      setIsFooterDocked(reachedTop && footerVisible);
+    };
 
-        const reachedTop =
-          rect.top <= 12;
+    const requestUpdate = () => {
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
 
-        const footerVisible =
-          rect.bottom > 0;
-
-        setIsFooterDocked(
-          reachedTop &&
-            footerVisible,
-        );
-      };
-
-    const requestUpdate =
-      () => {
-        if (
-          frameRef.current !==
-          null
-        ) {
-          cancelAnimationFrame(
-            frameRef.current,
-          );
-        }
-
-        frameRef.current =
-          requestAnimationFrame(
-            updateFooterDock,
-          );
-      };
+      frameRef.current = requestAnimationFrame(updateFooterDock);
+    };
 
     updateFooterDock();
 
-    window.addEventListener(
-      "scroll",
-      requestUpdate,
-      {
-        passive: true,
-      },
-    );
+    window.addEventListener("scroll", requestUpdate, {
+      passive: true,
+    });
 
-    window.addEventListener(
-      "resize",
-      requestUpdate,
-    );
+    window.addEventListener("resize", requestUpdate);
 
     return () => {
-      if (
-        frameRef.current !==
-        null
-      ) {
-        cancelAnimationFrame(
-          frameRef.current,
-        );
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
       }
 
-      window.removeEventListener(
-        "scroll",
-        requestUpdate,
-      );
-
-      window.removeEventListener(
-        "resize",
-        requestUpdate,
-      );
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
     };
   }, []);
 
@@ -255,25 +216,114 @@ export default function Navbar() {
 
   useEffect(() => {
     const updateHash = () => {
-      setActiveHash(
-        window.location.hash,
-      );
+      setActiveHash(window.location.hash);
     };
 
     updateHash();
 
-    window.addEventListener(
-      "hashchange",
-      updateHash,
-    );
+    window.addEventListener("hashchange", updateHash);
 
     return () => {
-      window.removeEventListener(
-        "hashchange",
-        updateHash,
-      );
+      window.removeEventListener("hashchange", updateHash);
     };
   }, []);
+
+  /* ========================================================
+     HASH SCROLL
+
+     Permite que /#seccion funcione correctamente incluso
+     después de venir desde otra página.
+  ======================================================== */
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const hash = window.location.hash;
+
+    if (!hash || !HOME_SECTION_HASHES.has(hash)) return;
+
+    const restore = () => {
+      const element = document.getElementById(hash.slice(1));
+
+      if (!element) return;
+
+      const headerOffset = window.innerWidth <= 700 ? 74 : 94;
+
+      const top =
+        element.getBoundingClientRect().top +
+        window.scrollY -
+        headerOffset;
+
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "auto",
+      });
+    };
+
+    if (restoreFrameRef.current !== null) {
+      cancelAnimationFrame(restoreFrameRef.current);
+    }
+
+    restoreFrameRef.current = requestAnimationFrame(() => {
+      restoreFrameRef.current = requestAnimationFrame(restore);
+    });
+
+    return () => {
+      if (restoreFrameRef.current !== null) {
+        cancelAnimationFrame(restoreFrameRef.current);
+      }
+    };
+  }, [pathname, activeHash]);
+
+  /* ========================================================
+     SCROLL POSITION / BACK-FORWARD NAVIGATION
+
+     Si el usuario está dentro de una sección:
+       sección -> página -> atrás
+
+     el navegador vuelve a la URL anterior y esta lógica
+     mantiene/restaura la posición correspondiente.
+  ======================================================== */
+
+  useEffect(() => {
+    const previousPath = previousPathRef.current;
+
+    if (previousPath !== pathname) {
+      const currentKey = `${previousPath}${window.location.hash || ""}`;
+
+      try {
+        sessionStorage.setItem(
+          `${SCROLL_STORAGE_KEY}:${currentKey}`,
+          String(window.scrollY),
+        );
+      } catch {
+        // sessionStorage puede estar bloqueado en ciertos entornos.
+      }
+
+      previousPathRef.current = pathname;
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    const saveCurrentPosition = () => {
+      const key = `${pathname}${window.location.hash || ""}`;
+
+      try {
+        sessionStorage.setItem(
+          `${SCROLL_STORAGE_KEY}:${key}`,
+          String(window.scrollY),
+        );
+      } catch {
+        // No interrumpir la navegación si storage no está disponible.
+      }
+    };
+
+    window.addEventListener("beforeunload", saveCurrentPosition);
+
+    return () => {
+      window.removeEventListener("beforeunload", saveCurrentPosition);
+    };
+  }, [pathname]);
 
   /* ========================================================
      CLOSE MENU WHEN ROUTE CHANGES
@@ -289,20 +339,14 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!isMenuOpen) {
-      document.body.style.removeProperty(
-        "overflow",
-      );
-
+      document.body.style.removeProperty("overflow");
       return;
     }
 
-    document.body.style.overflow =
-      "hidden";
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.body.style.removeProperty(
-        "overflow",
-      );
+      document.body.style.removeProperty("overflow");
     };
   }, [isMenuOpen]);
 
@@ -311,27 +355,16 @@ export default function Navbar() {
   ======================================================== */
 
   useEffect(() => {
-    const handleKeyDown = (
-      event: KeyboardEvent,
-    ) => {
-      if (
-        event.key ===
-        "Escape"
-      ) {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
         setIsMenuOpen(false);
       }
     };
 
-    window.addEventListener(
-      "keydown",
-      handleKeyDown,
-    );
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener(
-        "keydown",
-        handleKeyDown,
-      );
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -339,59 +372,30 @@ export default function Navbar() {
      ACTIVE
   ======================================================== */
 
-  const isActive = (
-    href: string,
-  ) => {
-    const [
-      route,
-      hash,
-    ] = href.split("#");
+  const isActive = (href: string) => {
+    const [route, hash] = href.split("#");
+    const currentPath = normalizePath(pathname);
 
-    /* -----------------------------------------
-       HOME
-    ------------------------------------------ */
+    /* HOME */
+    if (href === "/") {
+      return currentPath === "/" && !activeHash;
+    }
 
-    if (
-      href === "/"
-    ) {
+    /* HOME SECTION */
+    if (hash && (!route || route === "/")) {
       return (
-        pathname === "/" &&
-        !activeHash
+        currentPath === "/" &&
+        activeHash === `#${hash}`
       );
     }
 
-    /* -----------------------------------------
-       HASH HOME
-       /#ubicacion
-    ------------------------------------------ */
+    /* NORMAL ROUTE */
+    if (route) {
+      const normalizedRoute = normalizePath(route);
 
-    if (
-      hash &&
-      (
-        !route ||
-        route === "/"
-      )
-    ) {
       return (
-        pathname === "/" &&
-        activeHash ===
-          `#${hash}`
-      );
-    }
-
-    /* -----------------------------------------
-       NORMAL ROUTE
-    ------------------------------------------ */
-
-    if (
-      route
-    ) {
-      return (
-        pathname ===
-          route ||
-        pathname.startsWith(
-          `${route}/`,
-        )
+        currentPath === normalizedRoute ||
+        currentPath.startsWith(`${normalizedRoute}/`)
       );
     }
 
@@ -399,19 +403,41 @@ export default function Navbar() {
   };
 
   /* ========================================================
-     HELPERS
+     NAVIGATION HANDLER
+
+     Para anchors de la home no hacemos navegación manual:
+     Next <Link> mantiene la navegación SPA y el hash queda
+     en la URL. Esto permite volver con Back a la sección.
   ======================================================== */
 
-  const closeMenu =
-    () => {
-      setIsMenuOpen(
-        false,
-      );
-    };
+  const handleNavigationClick = (href: string) => {
+    if (typeof window === "undefined") return;
 
-  const showFooterNav =
-    isFooterDocked &&
-    !isMenuOpen;
+    const hash = getHashFromHref(href);
+
+    try {
+      const key = `${window.location.pathname}${window.location.hash || ""}`;
+
+      sessionStorage.setItem(
+        `${SCROLL_STORAGE_KEY}:${key}`,
+        String(window.scrollY),
+      );
+    } catch {
+      // No bloquear navegación.
+    }
+
+    if (hash) {
+      setActiveHash(hash);
+    }
+
+    setIsMenuOpen(false);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const showFooterNav = isFooterDocked && !isMenuOpen;
 
   /* ========================================================
      RENDER
@@ -434,96 +460,44 @@ export default function Navbar() {
             : ""
         }`}
       >
-        <div
-          className={
-            styles.notch
-          }
-        >
+        <div className={styles.notch}>
           {showFooterNav ? (
             /* ===============================================
                FOOTER NAVBAR MODE
             ================================================ */
 
-            <div
-              className={
-                styles.footerNav
-              }
-            >
-              {/* LOGO */}
-
+            <div className={styles.footerNav}>
               <Link
                 href="/"
-                className={
-                  styles.footerNavLogo
-                }
+                className={styles.footerNavLogo}
                 aria-label="Zagari Resort Club"
+                onClick={() => handleNavigationClick("/")}
               >
                 <Image
                   src="/assets/brand/zagari-logo-dark.svg"
                   alt="Zagari Resort Club"
                   width={150}
                   height={50}
-                  className={
-                    styles.footerNavLogoImage
-                  }
+                  className={styles.footerNavLogoImage}
                 />
               </Link>
 
-              {/* MESSAGE */}
-
-              <div
-                className={
-                  styles.footerNavMessage
-                }
-              >
+              <div className={styles.footerNavMessage}>
+                <span>Zagari Resort Club</span>
+                <strong>Tu lugar para volver.</strong>
+                <small>San Ramón · Selva Central</small>
               </div>
 
-              {/* ACTIONS */}
-
-              <div
-                className={
-                  styles.footerNavActions
-                }
-              >
+              <div className={styles.footerNavActions}>
                 <a
-                  href={
-                    whatsappUrl
-                  }
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={
-                    styles.footerWhatsapp
-                  }
+                  className={styles.footerWhatsapp}
                 >
-                  <WhatsappLogo
-                    size={17}
-                    weight="fill"
-                  />
-
-                  <span>
-                    Hablar por WhatsApp
-                  </span>
+                  <WhatsappLogo size={17} weight="fill" />
+                  <span>Hablar por WhatsApp</span>
                 </a>
-
-                {/* <button
-                  type="button"
-                  className={
-                    styles.footerTop
-                  }
-                  aria-label="Volver arriba"
-                  onClick={() => {
-                    window.scrollTo({
-                      top: 0,
-                      behavior:
-                        "smooth",
-                    });
-                  }}
-                >
-                  <ArrowUp
-                    size={16}
-                    weight="bold"
-                  />
-                </button> */}
               </div>
             </div>
           ) : (
@@ -533,43 +507,30 @@ export default function Navbar() {
               ============================================== */}
 
               <nav
-                className={
-                  styles.leftNavigation
-                }
+                className={styles.leftNavigation}
                 aria-label="Navegación principal"
               >
-                {leftNavigation.map(
-                  (item) => {
-                    const active =
-                      isActive(
-                        item.href,
-                      );
+                {leftNavigation.map((item) => {
+                  const active = isActive(item.href);
 
-                    return (
-                      <Link
-                        key={
-                          item.href
-                        }
-                        href={
-                          item.href
-                        }
-                        className={`${styles.navLink} ${
-                          active
-                            ? styles.navLinkActive
-                            : ""
-                        }`}
-                      >
-                        {item.label}
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      scroll={false}
+                      className={`${styles.navLink} ${
+                        active ? styles.navLinkActive : ""
+                      }`}
+                      onClick={() =>
+                        handleNavigationClick(item.href)
+                      }
+                    >
+                      {item.label}
 
-                        <span
-                          className={
-                            styles.navLine
-                          }
-                        />
-                      </Link>
-                    );
-                  },
-                )}
+                      <span className={styles.navLine} />
+                    </Link>
+                  );
+                })}
               </nav>
 
               {/* =============================================
@@ -578,10 +539,10 @@ export default function Navbar() {
 
               <Link
                 href="/"
-                className={
-                  styles.logo
-                }
+                scroll={false}
+                className={styles.logo}
                 aria-label="Zagari Resort Club"
+                onClick={() => handleNavigationClick("/")}
               >
                 <Image
                   src="/assets/brand/zagari-logo-dark.svg"
@@ -589,9 +550,7 @@ export default function Navbar() {
                   width={160}
                   height={54}
                   priority
-                  className={
-                    styles.logoImage
-                  }
+                  className={styles.logoImage}
                 />
               </Link>
 
@@ -599,66 +558,43 @@ export default function Navbar() {
                   DESKTOP RIGHT
               ============================================== */}
 
-              <div
-                className={
-                  styles.rightArea
-                }
-              >
+              <div className={styles.rightArea}>
                 <nav
-                  className={
-                    styles.rightNavigation
-                  }
+                  className={styles.rightNavigation}
                   aria-label="Secciones"
                 >
-                  {rightNavigation.map(
-                    (item) => {
-                      const active =
-                        isActive(
-                          item.href,
-                        );
+                  {rightNavigation.map((item) => {
+                    const active = isActive(item.href);
 
-                      return (
-                        <Link
-                          key={
-                            item.href
-                          }
-                          href={
-                            item.href
-                          }
-                          className={`${styles.navLink} ${
-                            active
-                              ? styles.navLinkActive
-                              : ""
-                          }`}
-                        >
-                          {item.label}
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        scroll={false}
+                        className={`${styles.navLink} ${
+                          active
+                            ? styles.navLinkActive
+                            : ""
+                        }`}
+                        onClick={() =>
+                          handleNavigationClick(item.href)
+                        }
+                      >
+                        {item.label}
 
-                          <span
-                            className={
-                              styles.navLine
-                            }
-                          />
-                        </Link>
-                      );
-                    },
-                  )}
+                        <span className={styles.navLine} />
+                      </Link>
+                    );
+                  })}
                 </nav>
 
                 <Link
                   href="/contacto"
-                  className={
-                    styles.contactButton
-                  }
+                  className={styles.contactButton}
                 >
-                  <span>
-                    Agendar visita
-                  </span>
+                  <span>Agendar visita</span>
 
-                  <span
-                    className={
-                      styles.contactIcon
-                    }
-                  >
+                  <span className={styles.contactIcon}>
                     <ArrowRight
                       size={15}
                       weight="bold"
@@ -673,33 +609,22 @@ export default function Navbar() {
 
               <button
                 type="button"
-                className={
-                  styles.menuButton
-                }
+                className={styles.menuButton}
                 aria-label={
                   isMenuOpen
                     ? "Cerrar menú"
                     : "Abrir menú"
                 }
-                aria-expanded={
-                  isMenuOpen
-                }
+                aria-expanded={isMenuOpen}
                 aria-controls="zagari-menu"
-                onClick={() => {
-                  setIsMenuOpen(
-                    (current) =>
-                      !current,
-                  );
-                }}
+                onClick={() =>
+                  setIsMenuOpen((current) => !current)
+                }
               >
                 {isMenuOpen ? (
-                  <X
-                    size={20}
-                  />
+                  <X size={20} />
                 ) : (
-                  <List
-                    size={22}
-                  />
+                  <List size={22} />
                 )}
               </button>
             </>
@@ -719,14 +644,8 @@ export default function Navbar() {
             : ""
         }`}
         aria-label="Cerrar menú"
-        onClick={
-          closeMenu
-        }
-        tabIndex={
-          isMenuOpen
-            ? 0
-            : -1
-        }
+        onClick={closeMenu}
+        tabIndex={isMenuOpen ? 0 : -1}
       />
 
       {/* ===================================================
@@ -740,27 +659,14 @@ export default function Navbar() {
             ? styles.mobileMenuOpen
             : ""
         }`}
-        aria-hidden={
-          !isMenuOpen
-        }
+        aria-hidden={!isMenuOpen}
       >
-        {/* ===============================================
-            MOBILE HEADER
-        ================================================ */}
-
-        <div
-          className={
-            styles.mobileHeader
-          }
-        >
+        <div className={styles.mobileHeader}>
           <Link
             href="/"
-            className={
-              styles.mobileLogo
-            }
-            onClick={
-              closeMenu
-            }
+            scroll={false}
+            className={styles.mobileLogo}
+            onClick={() => handleNavigationClick("/")}
             aria-label="Ir al inicio"
           >
             <Image
@@ -768,43 +674,26 @@ export default function Navbar() {
               alt="Zagari Resort Club"
               width={140}
               height={50}
-              className={
-                styles.mobileLogoImage
-              }
+              className={styles.mobileLogoImage}
             />
           </Link>
 
           <button
             type="button"
-            className={
-              styles.closeButton
-            }
-            onClick={
-              closeMenu
-            }
+            className={styles.closeButton}
+            onClick={closeMenu}
             aria-label="Cerrar menú"
           >
-            <X
-              size={20}
-            />
+            <X size={20} />
           </button>
         </div>
 
-        {/* ===============================================
-            MOBILE INTRO
-        ================================================ */}
-
-        <div
-          className={
-            styles.mobileIntro
-          }
-        >
-          <span>
-            Zagari Resort Club
-          </span>
+        <div className={styles.mobileIntro}>
+          <span>Zagari Resort Club</span>
 
           <h2>
             Vive diferente
+            <br />
             en San Ramón.
           </h2>
 
@@ -815,147 +704,68 @@ export default function Navbar() {
           </p>
         </div>
 
-        {/* ===============================================
-            MOBILE NAVIGATION
-        ================================================ */}
-
         <nav
-          className={
-            styles.mobileNavigation
-          }
+          className={styles.mobileNavigation}
           aria-label="Navegación móvil"
         >
-          {mobileNavigation.map(
-            (
-              item,
-              index,
-            ) => {
-              const active =
-                isActive(
-                  item.href,
-                );
+          {mobileNavigation.map((item, index) => {
+            const active = isActive(item.href);
 
-              return (
-                <Link
-                  key={
-                    item.href
-                  }
-                  href={
-                    item.href
-                  }
-                  onClick={
-                    closeMenu
-                  }
-                  className={`${styles.mobileLink} ${
-                    active
-                      ? styles.mobileLinkActive
-                      : ""
-                  }`}
-                >
-                  <span
-                    className={
-                      styles.mobileIndex
-                    }
-                  >
-                    {String(
-                      index + 1,
-                    ).padStart(
-                      2,
-                      "0",
-                    )}
-                  </span>
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                scroll={false}
+                onClick={() =>
+                  handleNavigationClick(item.href)
+                }
+                className={`${styles.mobileLink} ${
+                  active
+                    ? styles.mobileLinkActive
+                    : ""
+                }`}
+              >
+                <span className={styles.mobileIndex}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
 
-                  <strong>
-                    {item.label}
-                  </strong>
+                <strong>{item.label}</strong>
 
-                  <span
-                    className={
-                      styles.mobileArrow
-                    }
-                  >
-                    <ArrowRight
-                      size={17}
-                    />
-                  </span>
-                </Link>
-              );
-            },
-          )}
+                <span className={styles.mobileArrow}>
+                  <ArrowRight size={17} />
+                </span>
+              </Link>
+            );
+          })}
         </nav>
-
-        {/* ===============================================
-            MOBILE CONTACT CTA
-        ================================================ */}
 
         <Link
           href="/contacto"
-          className={
-            styles.mobileContact
-          }
-          onClick={
-            closeMenu
-          }
+          className={styles.mobileContact}
+          onClick={closeMenu}
         >
-          <span>
-            Solicitar información
-          </span>
+          <span>Solicitar información</span>
 
-          <span
-            className={
-              styles.mobileContactIcon
-            }
-          >
-            <ArrowRight
-              size={17}
-              weight="bold"
-            />
+          <span className={styles.mobileContactIcon}>
+            <ArrowRight size={17} weight="bold" />
           </span>
         </Link>
 
-        {/* ===============================================
-            MOBILE WHATSAPP
-        ================================================ */}
-
         <a
-          href={
-            whatsappUrl
-          }
+          href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={
-            styles.mobileWhatsapp
-          }
-          onClick={
-            closeMenu
-          }
+          className={styles.mobileWhatsapp}
+          onClick={closeMenu}
         >
-          <WhatsappLogo
-            size={18}
-            weight="fill"
-          />
+          <WhatsappLogo size={18} weight="fill" />
 
-          <span>
-            Hablar por WhatsApp
-          </span>
+          <span>Hablar por WhatsApp</span>
         </a>
 
-        {/* ===============================================
-            MOBILE FOOTER
-        ================================================ */}
-
-        <div
-          className={
-            styles.mobileFooter
-          }
-        >
-          <span>
-            San Ramón · Selva Central
-          </span>
-
-          <span>
-            Zagari Resort Club
-          </span>
+        <div className={styles.mobileFooter}>
+          <span>San Ramón · Selva Central</span>
+          <span>Zagari Resort Club</span>
         </div>
       </aside>
     </>

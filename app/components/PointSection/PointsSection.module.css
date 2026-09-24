@@ -1,0 +1,799 @@
+/* PointsSection_NuevoDiseno_GSAP.module.css */
+
+.section {
+  --green: #174c3c;
+  --green-deep: #103b30;
+  --green-soft: #1c5947;
+  --gold: #cda84d;
+  --gold-light: #e1c474;
+  --cream: #f4eee1;
+  --muted: rgba(244, 238, 225, 0.62);
+  --line: rgba(244, 238, 225, 0.14);
+
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 128px 0 120px;
+  background:
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(205, 168, 77, 0.08),
+      transparent 26rem
+    ),
+    radial-gradient(
+      circle at 10% 82%,
+      rgba(255, 255, 255, 0.035),
+      transparent 24rem
+    ),
+    var(--green);
+  color: var(--cream);
+}
+
+.noise {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+.container {
+  width: min(1280px, calc(100% - 96px));
+  margin: 0 auto;
+}
+
+.header {
+  width: min(790px, 100%);
+  margin: 0 auto 86px;
+  text-align: center;
+}
+
+.eyebrow,
+.kicker {
+  display: block;
+  margin: 0 0 17px;
+  color: var(--gold-light);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 57px;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.title em,
+.sectionHeading em,
+.progressTop h3 em {
+  color: var(--gold-light);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.intro {
+  width: min(610px, 100%);
+  margin: 25px auto 0;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(420px, 0.88fr);
+  gap: 72px;
+  align-items: start;
+}
+
+.progressPanel,
+.activitiesPanel {
+  min-width: 0;
+}
+
+.progressTop {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid var(--line);
+}
+
+.progressTop h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  white-space: nowrap;
+}
+
+.counter span {
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 44px;
+  line-height: 0.9;
+}
+
+.counter small {
+  margin-top: 7px;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.progressTrack {
+  position: relative;
+  height: 3px;
+  margin-top: 31px;
+  overflow: hidden;
+  background: rgba(244, 238, 225, 0.13);
+}
+
+.progressFill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.progressLabels {
+  display: grid;
+  grid-template-columns: 0.3fr 0.7fr 1fr;
+  margin-top: 13px;
+}
+
+.progressLabels > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.progressLabels > div:nth-child(2) {
+  padding-left: 22px;
+}
+
+.progressLabels > div:last-child {
+  align-items: flex-end;
+}
+
+.progressLabels span {
+  color: var(--cream);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.progressLabels small {
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+}
+
+.currentMarker span {
+  color: var(--gold-light);
+}
+
+.levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 70px;
+}
+
+.level {
+  min-height: 205px;
+  padding: 27px 22px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+  transition:
+    transform 0.4s ease,
+    border-color 0.4s ease,
+    background 0.4s ease;
+}
+
+.level:hover {
+  transform: translateY(-8px);
+  border-color: rgba(205, 168, 77, 0.45);
+  background: rgba(205, 168, 77, 0.055);
+}
+
+.levelGold {
+  border-color: rgba(205, 168, 77, 0.34);
+}
+
+.levelCircle {
+  display: grid;
+  place-items: center;
+  width: 53px;
+  height: 53px;
+  margin-bottom: 29px;
+  border: 1px solid rgba(244, 238, 225, 0.3);
+  border-radius: 50%;
+}
+
+.levelGold .levelCircle {
+  border-color: var(--gold);
+}
+
+.levelCircle span {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+}
+
+.levelText {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.levelText strong {
+  color: var(--cream);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+
+.levelText span {
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+}
+
+.levelText small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.sectionHeading h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.deck {
+  position: relative;
+  height: 360px;
+  perspective: 1200px;
+}
+
+.pointCard {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 285px;
+  padding: 31px 34px;
+  border: 1px solid rgba(244, 238, 225, 0.16);
+  outline: none;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.065),
+      rgba(255, 255, 255, 0.018)
+    ),
+    var(--green-soft);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.12);
+  transform-origin: center bottom;
+  cursor: pointer;
+  will-change: transform;
+}
+
+.pointCard:nth-child(1) {
+  z-index: 5;
+  transform: translate3d(0, 0, 0) rotate(0deg);
+}
+
+.pointCard:nth-child(2) {
+  z-index: 4;
+  transform: translate3d(14px, 14px, -20px) rotate(1.2deg) scale(0.965);
+}
+
+.pointCard:nth-child(3) {
+  z-index: 3;
+  transform: translate3d(27px, 27px, -40px) rotate(2.1deg) scale(0.93);
+}
+
+.pointCard:nth-child(4) {
+  z-index: 2;
+  transform: translate3d(39px, 39px, -60px) rotate(3deg) scale(0.895);
+}
+
+.pointCard:nth-child(5) {
+  z-index: 1;
+  transform: translate3d(50px, 50px, -80px) rotate(3.8deg) scale(0.86);
+}
+
+.pointCard:nth-child(n + 2) {
+  pointer-events: none;
+}
+
+.pointCard:first-child:hover {
+  border-color: rgba(225, 196, 116, 0.62);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.19);
+}
+
+.pointCard:focus-visible {
+  border-color: var(--gold-light);
+  box-shadow:
+    0 0 0 2px var(--green),
+    0 0 0 4px rgba(225, 196, 116, 0.7);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border: 1px solid rgba(225, 196, 116, 0.32);
+  border-radius: 50%;
+  color: var(--gold-light);
+}
+
+.cardBody {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.points {
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 57px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.cardBody h4 {
+  margin: 0 0 9px;
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.cardBody p {
+  max-width: 320px;
+  margin: 0;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.cardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.cardLine {
+  width: 100%;
+  height: 1px;
+  background: rgba(244, 238, 225, 0.12);
+}
+
+.cardAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(244, 238, 225, 0.55);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cardAction svg {
+  color: var(--gold-light);
+  transition: transform 0.3s ease;
+}
+
+.pointCard:first-child:hover .cardAction svg {
+  transform: translateX(4px);
+}
+
+.deckStatus {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 17px;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.deckStatus span:first-child {
+  color: var(--gold-light);
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 12px;
+  margin-top: 72px;
+}
+
+.valueCard,
+.ruleCard {
+  position: relative;
+  min-height: 200px;
+  padding: 29px 31px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.valueMain {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin: 26px 0 17px;
+}
+
+.valueMain strong {
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 39px;
+  font-weight: 400;
+}
+
+.valueMain span {
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.valueMain b {
+  margin: 0 10px;
+  color: var(--gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.valueCard p {
+  max-width: 610px;
+  margin: 0;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.ruleCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.ruleCard p {
+  margin: auto 0 0;
+  color: var(--muted);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.ruleCard p strong {
+  color: var(--cream);
+  font-weight: 400;
+}
+
+.ruleArrow {
+  position: absolute;
+  right: 27px;
+  bottom: 25px;
+  display: grid;
+  place-items: center;
+  color: var(--gold-light);
+}
+
+@media (max-width: 1100px) {
+  .container {
+    width: min(920px, calc(100% - 56px));
+  }
+
+  .mainGrid {
+    grid-template-columns: 1fr;
+    gap: 75px;
+  }
+
+  .activitiesPanel {
+    width: 100%;
+  }
+
+  .deck {
+    max-width: 760px;
+  }
+
+  .levels {
+    margin-top: 55px;
+  }
+}
+
+@media (max-width: 760px) {
+  .section {
+    padding: 88px 0 85px;
+  }
+
+  .container {
+    width: calc(100% - 34px);
+  }
+
+  .header {
+    margin-bottom: 60px;
+  }
+
+  .title {
+    font-size: 43px;
+  }
+
+  .intro {
+    font-size: 13px;
+  }
+
+  .progressTop {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .progressTop h3 {
+    font-size: 29px;
+  }
+
+  .counter {
+    align-items: flex-start;
+  }
+
+  .levels {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 42px;
+  }
+
+  .level {
+    display: grid;
+    grid-template-columns: 53px 1fr;
+    gap: 18px;
+    align-items: center;
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .levelCircle {
+    margin: 0;
+  }
+
+  .deck {
+    height: 390px;
+  }
+
+  .pointCard {
+    min-height: 315px;
+    padding: 25px 23px;
+  }
+
+  .cardBody {
+    grid-template-columns: 75px minmax(0, 1fr);
+    gap: 19px;
+  }
+
+  .points {
+    font-size: 43px;
+  }
+
+  .cardBody h4 {
+    font-size: 21px;
+  }
+
+  .cardBody p {
+    font-size: 11px;
+  }
+
+  .bottomGrid {
+    grid-template-columns: 1fr;
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 72px 0 70px;
+  }
+
+  .container {
+    width: calc(100% - 26px);
+  }
+
+  .title {
+    font-size: 37px;
+  }
+
+  .intro {
+    margin-top: 19px;
+    line-height: 1.65;
+  }
+
+  .progressLabels {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .progressLabels > div:nth-child(2) {
+    padding-left: 8px;
+  }
+
+  .progressLabels span {
+    font-size: 8px;
+  }
+
+  .progressLabels small {
+    font-size: 8px;
+  }
+
+  .sectionHeading h3 {
+    font-size: 27px;
+  }
+
+  .deck {
+    height: 380px;
+  }
+
+  .pointCard {
+    min-height: 305px;
+    padding: 21px 19px;
+  }
+
+  .cardBody {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .points {
+    font-size: 48px;
+  }
+
+  .cardBody h4 {
+    font-size: 20px;
+  }
+
+  .cardBody p {
+    max-width: 100%;
+  }
+
+  .pointCard:nth-child(2) {
+    transform: translate3d(8px, 10px, -20px) rotate(1deg) scale(0.965);
+  }
+
+  .pointCard:nth-child(3) {
+    transform: translate3d(15px, 20px, -40px) rotate(2deg) scale(0.93);
+  }
+
+  .pointCard:nth-child(4) {
+    transform: translate3d(22px, 30px, -60px) rotate(3deg) scale(0.895);
+  }
+
+  .pointCard:nth-child(5) {
+    transform: translate3d(29px, 40px, -80px) rotate(3.8deg) scale(0.86);
+  }
+
+  .valueCard,
+  .ruleCard {
+    min-height: 185px;
+    padding: 24px 21px;
+  }
+
+  .valueMain {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .valueMain strong {
+    font-size: 34px;
+  }
+
+  .valueMain b {
+    margin: 0 5px;
+  }
+
+  .ruleCard p {
+    font-size: 18px;
+  }
+
+  .deckStatus {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+}
+
+@media (max-width: 360px) {
+  .title {
+    font-size: 33px;
+  }
+
+  .progressTop h3 {
+    font-size: 26px;
+  }
+
+  .pointCard {
+    padding: 19px 16px;
+  }
+
+  .points {
+    font-size: 42px;
+  }
+
+  .cardBody h4 {
+    font-size: 18px;
+  }
+
+  .cardBody p {
+    font-size: 10px;
+  }
+
+  .cardIcon {
+    width: 31px;
+    height: 31px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level,
+  .cardAction svg {
+    transition: none;
+  }
+}

@@ -6,7 +6,7 @@ import type {
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: [
-    "192.168.1.75"
+    "192.168.1.131"
   ],
   
   poweredByHeader:
