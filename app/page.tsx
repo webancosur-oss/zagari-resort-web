@@ -6,7 +6,6 @@ import HeroSection from "./components/home/HeroSection";
 import HomeContactForm from "./components/home/HomeContactForm";
 import HowItWorksSection from "./components/HowWorksSection/HowWorksSection";
 import LocationSection from "./components/LocationSection/LocationSection";
-import LotsSection from "./components/LotsSection/LotsSection";
 import ZagariManifesto from "./components/Manifesto/ZagariManifesto";
 import MembershipsSection from "./components/MebresiaSection/MembershipsSection";
 import OwnerSection from "./components/OwnerSection/OwnerSection";
