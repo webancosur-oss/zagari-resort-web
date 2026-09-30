@@ -680,9 +680,9 @@ export default function UbicacionSection() {
 
     mountedRef.current = true;
 
-    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+    const token = process.env.MAPBOX_TOKEN;
     if (!token) {
-      setRouteError("Falta NEXT_PUBLIC_MAPBOX_TOKEN.");
+      setRouteError("Falta MAPBOX_TOKEN.");
       return;
     }
 
