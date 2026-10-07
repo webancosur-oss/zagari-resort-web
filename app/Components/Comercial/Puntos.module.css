@@ -1,0 +1,131 @@
+.cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.flechas {
+  display: none;
+  flex: none;
+  gap: 10px;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+.pista {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(260px, 82%);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.pista::-webkit-scrollbar {
+  display: none;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: 22px;
+  border-radius: 20px;
+  background: var(--zg-panel);
+  scroll-snap-align: start;
+}
+
+.arriba {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--zg-blanco);
+  color: var(--zg-bosque);
+}
+
+.insignia {
+  padding: 6px 12px;
+  border: 1px solid var(--zg-linea);
+  border-radius: 999px;
+  background: var(--zg-blanco);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--zg-tinta);
+}
+
+/* Donde la referencia pone las comillas de la reseña. */
+.cifra {
+  margin: 22px 0 0;
+  font-size: 3rem;
+  line-height: 1;
+  color: rgba(23, 33, 28, 0.18);
+}
+
+.accion {
+  margin: 14px 0 0;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--zg-tinta);
+}
+
+.equivale {
+  margin: auto 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--zg-linea);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--zg-tinta-suave);
+}
+
+.datos {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.datos li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--zg-linea);
+  border-radius: 14px;
+}
+
+.datos strong {
+  font-size: 15px;
+  color: var(--zg-tinta);
+}
+
+.datos span {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--zg-tinta-suave);
+}
+
+@media (min-width: 700px) {
+  .flechas {
+    display: flex;
+  }
+
+  .pista {
+    grid-auto-columns: calc((100% - 32px) / 3);
+  }
+
+  .datos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

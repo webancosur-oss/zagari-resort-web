@@ -1,0 +1,54 @@
+.enlaces {
+  margin-top: 28px;
+}
+
+.whatsapp {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 8px;
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 220ms ease;
+}
+
+.whatsapp:focus-visible,
+.lista a:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 3px;
+}
+
+.lista {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--zg-linea);
+  font-size: 15px;
+  color: var(--zg-tinta);
+  text-decoration: none;
+}
+
+.lista svg {
+  color: var(--zg-bosque);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .whatsapp:hover {
+    background: var(--zg-bosque-oscuro);
+  }
+
+  .lista a:hover {
+    color: var(--zg-bosque);
+  }
+}

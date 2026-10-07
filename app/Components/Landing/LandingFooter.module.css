@@ -1,0 +1,241 @@
+.footer {
+  position: relative;
+  width: 100%;
+  margin-top: auto;
+  overflow: hidden;
+  background: var(--zg-tinta);
+  color: var(--zg-claro);
+  isolation: isolate;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--zg-espectro);
+}
+
+.capaFondo {
+  position: absolute;
+  inset: -10% 0;
+  display: block;
+  z-index: -2;
+}
+
+/* La añade el parallax solo mientras el pie está en pantalla. */
+.capaFondoActiva {
+  will-change: transform;
+}
+
+.fondo {
+  object-fit: cover;
+}
+
+.velo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* Nace del blanco de la página, como en la referencia, y se oscurece
+     hacia abajo para que el texto claro tenga contraste. */
+  background: linear-gradient(
+    180deg,
+    var(--zg-blanco) 0,
+    rgba(3, 20, 14, 0.5) 120px,
+    rgba(3, 20, 14, 0.62) 45%,
+    rgba(3, 20, 14, 0.9) 100%
+  );
+}
+
+.inner {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(150px, 16vw, 210px) clamp(16px, 4vw, 48px)
+    clamp(20px, 2.4vw, 28px);
+}
+
+.superior {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: clamp(20px, 2.6vw, 30px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bloqueContacto {
+  min-width: 0;
+}
+
+.etiqueta {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--zg-tenue);
+}
+
+.contacto {
+  font-size: clamp(16px, 0.5vw + 14.5px, 20px);
+  font-weight: 600;
+  color: var(--zg-blanco);
+  text-decoration: none;
+}
+
+.redes {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.red {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  color: var(--zg-claro);
+  transition: background-color 220ms ease, border-color 220ms ease,
+    color 220ms ease;
+}
+
+.wordmark {
+  margin: clamp(24px, 3vw, 40px) 0;
+  line-height: 0;
+}
+
+.logo {
+  width: min(100%, 980px);
+  height: auto;
+}
+
+.columnas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 3vw, 44px);
+  padding-bottom: clamp(24px, 3vw, 36px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.columnaTitulo {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--zg-tenue);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enlace {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--zg-claro-suave);
+  text-decoration: none;
+  transition: color 220ms ease;
+}
+
+.datos {
+  min-width: 0;
+}
+
+.dato {
+  margin: 0 0 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--zg-claro-suave);
+}
+
+.inferior {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-top: clamp(16px, 2vw, 22px);
+}
+
+.copyright {
+  margin: 0;
+  font-size: 13px;
+  color: var(--zg-tenue);
+}
+
+.red:focus-visible,
+.enlace:focus-visible,
+.contacto:focus-visible {
+  outline: 2px solid var(--zg-acento);
+  outline-offset: 3px;
+}
+
+@media (min-width: 760px) {
+  .columnas {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Resto del estado inicial del contrato anti-destello. El contrato apaga la
+   opacidad; estos bloques llevan enlaces, así que hasta que GSAP los revela
+   con autoAlpha tampoco deben ser enfocables. */
+:global(html.motion) .wordmark,
+:global(html.motion) .bloqueContacto,
+:global(html.motion) .redes > li,
+:global(html.motion) .columnas > *,
+:global(html.motion) .inferior {
+  visibility: hidden;
+}
+
+/* El wordmark entra con máscara y además sube: igual que SALTO en el TSX. */
+:global(html.motion) .wordmark {
+  transform: translate3d(0, 34px, 0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .red:hover {
+    background: var(--zg-acento);
+    border-color: var(--zg-acento);
+    color: var(--zg-tinta);
+  }
+  .enlace:hover,
+  .contacto:hover {
+    color: var(--zg-acento);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .red,
+  .enlace {
+    transition: none;
+  }
+
+  /* Si el sistema activa reduced motion con la escena ya oculta,
+     esto gana a los estilos en línea que dejó GSAP. */
+  .capaFondo,
+  .wordmark,
+  .columnas > *,
+  .bloqueContacto,
+  .redes > li,
+  .inferior {
+    visibility: visible !important;
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}

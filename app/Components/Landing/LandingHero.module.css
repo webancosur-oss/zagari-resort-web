@@ -1,0 +1,280 @@
+.section {
+  position: relative;
+  width: 100%;
+}
+
+/* Pantalla completa: todo el ancho y todo el alto visible bajo la barra. */
+.tarjeta {
+  position: relative;
+  height: max(520px, calc(100svh - var(--alto-nav, 0px)));
+  overflow: hidden;
+  background: var(--zg-bosque-profundo);
+  isolation: isolate;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+/* El jaguar está a un tercio del ancho: en vertical el recorte se centra en él. */
+.imagen,
+.video {
+  object-fit: cover;
+  object-position: 32% center;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.videoVisible {
+  opacity: 1;
+}
+
+.velo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(3, 45, 32, 0.7) 0%, rgba(3, 45, 32, 0.15) 34%, transparent 52%);
+  pointer-events: none;
+}
+
+.titulo {
+  position: absolute;
+  left: clamp(16px, 4vw, 64px);
+  bottom: clamp(20px, 3vw, 48px);
+  margin: 0;
+  max-width: calc(100% - 32px);
+  font-size: clamp(2.5rem, 6.8vw, 6.6rem);
+  font-weight: 600;
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  color: var(--zg-blanco);
+}
+
+.salto {
+  display: block;
+}
+
+.lateral {
+  padding: 24px 4px 8px;
+  color: var(--zg-tinta);
+}
+
+.lugar {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zg-tenue);
+}
+
+.parrafo {
+  max-width: 30rem;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.primario,
+.secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.primario {
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+}
+
+.secundario {
+  border: 1px solid var(--zg-tinta);
+  color: var(--zg-tinta);
+}
+
+.primario:focus-visible,
+.secundario:focus-visible {
+  outline: 2px solid var(--zg-tinta);
+  outline-offset: 3px;
+}
+
+.control {
+  position: absolute;
+  top: clamp(12px, 2vw, 20px);
+  left: clamp(12px, 2vw, 20px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(3, 45, 32, 0.4);
+  color: var(--zg-blanco);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--zg-blanco);
+  outline-offset: 3px;
+}
+
+/* translate y no transform: así el hover no queda anulado por la animación
+   con fill-mode "both". */
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.fadeRise {
+  animation: fadeRise 0.9s ease-out both;
+}
+
+.fadeRiseDelay {
+  animation: fadeRise 0.9s ease-out 0.25s both;
+}
+
+/* Hasta tablet el texto va sobre el video, abajo, y el titular encima de él. */
+@media (max-width: 1023.98px) {
+  .velo {
+    background: linear-gradient(to top, rgba(3, 20, 14, 0.92) 0%, rgba(3, 20, 14, 0.7) 38%, rgba(3, 20, 14, 0.15) 60%, transparent 72%);
+  }
+
+  .titulo {
+    position: static;
+    margin-bottom: 18px;
+  }
+
+  .tarjeta {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 clamp(16px, 4vw, 40px) clamp(20px, 4vw, 40px);
+  }
+
+  .lateral {
+    padding: 0;
+    color: var(--zg-blanco);
+  }
+
+  .lugar {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .parrafo {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .secundario {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: var(--zg-blanco);
+  }
+
+  .primario:focus-visible,
+  .secundario:focus-visible {
+    outline-color: var(--zg-blanco);
+  }
+}
+
+/* Desde tablet ancha el texto se superpone abajo a la derecha, sobre las
+   plantas; el titular ocupa la roca y deja libre la cara del jaguar. */
+@media (min-width: 1024px) {
+  .imagen,
+  .video {
+    object-position: center 30%;
+  }
+
+  .velo {
+    background:
+      linear-gradient(to top, rgba(3, 45, 32, 0.72) 0%, rgba(3, 45, 32, 0.1) 40%, transparent 55%),
+      linear-gradient(to left, rgba(3, 45, 32, 0.55) 0%, transparent 40%);
+  }
+
+  .lateral {
+    position: absolute;
+    right: clamp(16px, 4vw, 64px);
+    bottom: clamp(20px, 3vw, 48px);
+    width: min(380px, 30%);
+    padding: 0;
+    color: var(--zg-blanco);
+  }
+
+  .lugar {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .primario {
+    background: var(--zg-bosque);
+    color: var(--zg-blanco);
+  }
+
+  .secundario {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: var(--zg-blanco);
+  }
+
+  .primario:focus-visible,
+  .secundario:focus-visible {
+    outline-color: var(--zg-blanco);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .primario:hover {
+    background: var(--zg-bosque-oscuro);
+  }
+
+  .secundario:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .control:hover {
+    background: rgba(3, 45, 32, 0.65);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeRise,
+  .fadeRiseDelay {
+    animation: none;
+  }
+
+  .video,
+  .primario,
+  .secundario {
+    transition: none;
+  }
+}

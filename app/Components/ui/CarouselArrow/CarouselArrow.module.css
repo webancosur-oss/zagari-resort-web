@@ -1,0 +1,115 @@
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: clamp(44px, 4vw, 54px);
+  height: clamp(44px, 4vw, 54px);
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 260ms ease,
+    border-color 260ms ease,
+    opacity 260ms ease;
+}
+
+.dark {
+  border: 1px solid rgba(23, 35, 29, 0.14);
+
+  background: var(--zg-tinta);
+
+  color: var(--zg-blanco);
+}
+
+.light {
+  border: 1px solid rgba(255, 255, 255, 0.42);
+
+  background: rgba(13, 22, 19, 0.30);
+
+  color: var(--zg-blanco);
+
+  backdrop-filter: blur(8px);
+}
+
+.arrow:disabled {
+  opacity: 0.32;
+
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  .arrow:not(:disabled):hover {
+    transform: scale(1.07);
+  }
+
+  .dark:not(:disabled):hover {
+    background: var(--zg-verde);
+  }
+
+  .light:not(:disabled):hover {
+    background: rgba(13, 22, 19, 0.52);
+
+    border-color: var(--zg-acento);
+  }
+}
+
+.arrow:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--zg-acento);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .arrow {
+    transition: background-color 200ms ease;
+  }
+
+  .arrow:not(:disabled):hover,
+  .arrow:not(:disabled):active {
+    transform: none;
+  }
+}
+
+.plain {
+  border: 0;
+
+  background: var(--zg-blanco);
+
+  color: var(--zg-tinta);
+
+  box-shadow: 0 1px 3px rgba(18, 24, 21, 0.10);
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  .plain:not(:disabled):hover {
+    transform: translateY(-1px) scale(1.04);
+
+    box-shadow: 0 4px 12px rgba(18, 24, 21, 0.15);
+  }
+}
+
+.plain:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .plain:not(:disabled):hover,
+  .plain:not(:disabled):active {
+    transform: none;
+  }
+}

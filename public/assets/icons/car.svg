@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 32" width="64" height="32" role="img" aria-label="Van de Zagari Resort Club">
+  <!--
+    Van del club en vista cenital, apuntando a la derecha, para que gire
+    alineada con la ruta. La versión animada está en
+    app/Components/LocationRoute/CarroAnimado.tsx.
+  -->
+
+  <!-- sombra -->
+  <ellipse cx="32" cy="17" rx="28" ry="12.5" fill="rgba(0,0,0,.3)"/>
+
+  <!-- ruedas -->
+  <rect x="11" y="4.2" width="7" height="3.2" rx="1.4" fill="#141a17"/>
+  <rect x="44" y="4.2" width="7" height="3.2" rx="1.4" fill="#141a17"/>
+  <rect x="11" y="24.6" width="7" height="3.2" rx="1.4" fill="#141a17"/>
+  <rect x="44" y="24.6" width="7" height="3.2" rx="1.4" fill="#141a17"/>
+
+  <!-- carrocería verde bosque con contorno blanco -->
+  <path d="M9 6H52c4.5 0 7 3 7 7v6c0 4-2.5 7-7 7H9c-2.2 0-4-1.8-4-4V10c0-2.2 1.8-4 4-4Z" fill="#0d6b47" stroke="#ffffff" stroke-width="1"/>
+
+  <!-- parabrisas -->
+  <path d="M50 8h3c2.6 0 4 2.2 4 5v6c0 2.8-1.4 5-4 5h-3Z" fill="#1b2a24" opacity=".9"/>
+
+  <!-- techo con filos blancos y logotipo -->
+  <rect x="10" y="8.2" width="39" height="15.6" rx="2.5" fill="#0f7a52"/>
+  <rect x="11" y="8.9" width="37" height="0.9" rx="0.45" fill="#ffffff" opacity=".85"/>
+  <rect x="11" y="22.2" width="37" height="0.9" rx="0.45" fill="#ffffff" opacity=".85"/>
+  <image href="../logo/zagari-logo-light.svg" x="14.5" y="13.1" width="30" height="5.85"/>
+
+  <!-- espejos -->
+  <rect x="49" y="4.4" width="2.6" height="1.8" rx="0.6" fill="#0a5236"/>
+  <rect x="49" y="25.8" width="2.6" height="1.8" rx="0.6" fill="#0a5236"/>
+
+  <!-- puerta trasera -->
+  <line x1="8" y1="9" x2="8" y2="23" stroke="#ffffff" stroke-opacity=".35" stroke-width=".5"/>
+
+  <!-- faros y luces traseras -->
+  <circle cx="57.6" cy="10.2" r="1.5" fill="#fff3c4"/>
+  <circle cx="57.6" cy="21.8" r="1.5" fill="#fff3c4"/>
+  <rect x="5.4" y="8.2" width="1.4" height="3" rx="0.6" fill="#ff3b30" opacity=".6"/>
+  <rect x="5.4" y="20.8" width="1.4" height="3" rx="0.6" fill="#ff3b30" opacity=".6"/>
+</svg>

@@ -1,0 +1,154 @@
+.seccion {
+  padding: clamp(56px, 8vw, 104px) 0;
+}
+
+.claro,
+.crema,
+.arena {
+  background: var(--zg-blanco);
+}
+
+.bosque {
+  background: var(--zg-bosque-profundo);
+  color: var(--zg-crema);
+}
+
+/* Casi todo el ancho, como la referencia: hasta 1680 px. */
+.inner {
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 64px);
+}
+
+/* Panel gris redondeado: el contenedor recurrente de la referencia. */
+.panel {
+  padding: clamp(24px, 4vw, 48px);
+  border-radius: 28px;
+  background: var(--zg-panel);
+}
+
+.cabecera {
+  display: grid;
+  gap: 8px 32px;
+  margin: 0 0 clamp(28px, 4vw, 44px);
+}
+
+.etiqueta {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zg-tinta);
+}
+
+.titulo {
+  max-width: 22ch;
+  margin: 0;
+  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  line-height: 1.08;
+  color: var(--zg-tinta);
+}
+
+.bosque .titulo,
+.bosque .etiqueta {
+  color: var(--zg-crema);
+}
+
+.intro {
+  max-width: 44rem;
+  margin: 12px 0 0;
+  font-size: clamp(0.98rem, 1.4vw, 1.06rem);
+  line-height: 1.65;
+  color: var(--zg-tinta-suave);
+}
+
+/* "Ver todo" de la referencia: enlace subrayado alineado a la derecha. */
+.enlace {
+  align-self: end;
+  justify-self: start;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--zg-tinta);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.enlace:focus-visible {
+  outline: 2px solid var(--zg-tinta);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.aviso {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--zg-verde-suave);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--zg-bosque-oscuro);
+}
+
+.aviso svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.nota {
+  margin: 18px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--zg-tenue);
+}
+
+/* Botones de la referencia: rectángulos de esquina suave, negro sobre claro. */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--zg-bosque);
+  border-radius: 8px;
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.boton:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 3px;
+}
+
+@media (min-width: 760px) {
+  .cabecera {
+    grid-template-columns: 1fr auto;
+  }
+
+  .enlace {
+    justify-self: end;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .boton:hover {
+    background: var(--zg-bosque-oscuro);
+    border-color: var(--zg-bosque-oscuro);
+  }
+
+  .enlace:hover {
+    color: var(--zg-bosque);
+  }
+}

@@ -1,8 +1,7 @@
 {
-  "name": "zagari-resort-web",
+  "name": "zagari-web",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.11.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,38 +10,25 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@hookform/resolvers": "^5.7.1",
-    "@phosphor-icons/react": "^2.1.10",
-    "embla-carousel-react": "^8.6.0",
+    "@react-three/fiber": "^9.8.1",
     "gsap": "^3.15.0",
-    "lenis": "^1.3.25",
-    "mapbox-gl": "^3.31.0",
-    "motion": "^13.1.0",
-    "next": "16.2.12",
-    "next-sitemap": "^4.2.3",
-    "pdfjs-dist": "^6.2.108",
-    "react": "19.2.4",
-    "react-countup": "^6.5.3",
-    "react-dom": "19.2.4",
-    "react-hook-form": "^7.84.0",
-    "react-spinners": "^0.17.0",
-    "sonner": "^2.0.7",
-    "swiper": "^14.0.7",
-    "zod": "^4.4.3"
+    "lenis": "^1.3.26",
+    "motion": "^14.0.0",
+    "next": "16.3.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "reicon-react": "^1.2.6",
+    "three": "^0.186.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.12",
+    "eslint-config-next": "16.3.8",
     "typescript": "^5"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "wrangler"
-    ]
-  }
+  "packageManager": "pnpm@11.25.0"
 }

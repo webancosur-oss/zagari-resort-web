@@ -1,0 +1,47 @@
+/* Paleta oficial de zagari.pe (variables --color-* de su hoja de estilos).
+   El espectro viene del felino del logotipo y queda como acento puntual. */
+
+:root {
+  --zg-bosque: #0d6b47;
+  --zg-bosque-oscuro: #063f2c;
+  --zg-bosque-profundo: #032d20;
+  --zg-verde: #17a857;
+  --zg-verde-suave: #dff3e8;
+  --zg-cian: #00a99d;
+  --zg-azul: #008bc0;
+  --zg-ambar: #f5a116;
+  --zg-amarillo: #ffd401;
+  --zg-magenta: #bb0e64;
+  --zg-rojo: #e52529;
+  --zg-violeta: #51338a;
+
+  --zg-tinta: #17211c;
+  --zg-carbon: #26312b;
+  --zg-tinta-suave: #4b5650;
+  --zg-tenue: #7f8983;
+  --zg-linea: rgba(23, 33, 28, 0.12);
+  --zg-piedra: #e2e6e3;
+  --zg-claro: #e8ece9;
+  --zg-claro-suave: #cdd5d0;
+  --zg-panel: #f3f5f4;
+  --zg-crema: #fbf8f1;
+  --zg-arena: #f3ecde;
+  --zg-blanco: #ffffff;
+
+  /* Blanco sobre --zg-verde da 3,0:1 y no sirve para texto de botón;
+     sobre bosque da 6,9:1. */
+  --zg-acento: var(--zg-bosque);
+
+  --zg-espectro: linear-gradient(
+    90deg,
+    #e52529 0%,
+    #f5a116 14%,
+    #ffd401 28%,
+    #8cbf44 42%,
+    #009145 56%,
+    #00a99d 68%,
+    #008bc0 80%,
+    #51338a 90%,
+    #bb0e64 100%
+  );
+}

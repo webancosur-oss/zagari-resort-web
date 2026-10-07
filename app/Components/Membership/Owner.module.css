@@ -1,0 +1,158 @@
+.inner {
+  width: 100%;
+  max-width: 1180px;
+
+  margin: 0 auto;
+
+  text-align: center;
+}
+
+.pill {
+  display: inline-block;
+
+  margin: 0 0 clamp(16px, 2vw, 24px);
+  padding: 9px 22px;
+
+  border-radius: 999px;
+
+  background: rgba(20, 20, 18, 0.72);
+
+  font-size: clamp(10px, 0.3vw + 9px, 12px);
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  color: var(--zg-blanco);
+}
+
+.title {
+  margin: 0;
+
+  font-size: clamp(28px, 2.4vw + 18px, 48px);
+
+  font-weight: 600;
+
+  line-height: 1.1;
+
+  letter-spacing: 0.02em;
+
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 56ch;
+
+  margin: clamp(12px, 1.4vw, 18px) auto clamp(28px, 3.4vw, 44px);
+
+  font-size: clamp(15px, 0.4vw + 13.6px, 18px);
+
+  line-height: 1.5;
+
+  text-wrap: pretty;
+}
+
+.top {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: clamp(26px, 3.4vw, 48px);
+
+  align-items: center;
+
+  margin-bottom: clamp(32px, 4vw, 56px);
+
+  text-align: left;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+}
+
+.highlights {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: clamp(12px, 1.4vw, 16px);
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.highlight {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: clamp(12px, 1.4vw, 16px) clamp(14px, 1.6vw, 20px);
+
+  border-radius: 6px;
+
+  background: rgba(255, 248, 224, 0.92);
+
+  color: #6b5210;
+}
+
+.highlightIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: none;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  background: rgba(169, 133, 28, 0.14);
+
+  color: var(--zg-cian);
+}
+
+.highlightTitle {
+  display: block;
+
+  font-size: clamp(12px, 0.3vw + 11px, 14px);
+
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+}
+
+.highlightDetail {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: clamp(11px, 0.25vw + 10.2px, 13px);
+
+  line-height: 1.35;
+
+  color: #7e6418;
+}
+
+@media (min-width: 900px) {
+
+  .top {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  .highlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .highlight:last-child {
+    grid-column: 1 / -1;
+  }
+}

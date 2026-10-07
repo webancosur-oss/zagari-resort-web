@@ -1,0 +1,74 @@
+.section {
+  width: 100%;
+
+  margin: 0;
+
+  padding:
+    clamp(48px, 6vw, 76px)
+    clamp(20px, 3vw, 24px);
+
+  font-family:
+    var(--font-body),
+    "Inter",
+    system-ui,
+    sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 1080px;
+
+  margin: 0 auto;
+}
+
+.center {
+  text-align: center;
+}
+
+.center .container {
+  align-items: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.left .container {
+  align-items: flex-start;
+}
+
+.eyebrowReveal {
+  display: inline-flex;
+
+  margin-bottom: clamp(16px, 1.6vw, 23px);
+}
+
+.intro {
+  width: 100%;
+  max-width: 62ch;
+
+  margin: 0;
+
+  color: #252525;
+
+  font-size: clamp(15px, 0.5vw + 13.2px, 18px);
+
+  line-height: 1.45;
+
+  font-weight: 400;
+
+  letter-spacing: -0.012em;
+
+  text-wrap: pretty;
+}
+
+.description {
+  color: inherit;
+
+  font: inherit;
+
+  letter-spacing: inherit;
+}

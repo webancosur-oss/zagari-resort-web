@@ -1,0 +1,236 @@
+.section {
+  width: 100%;
+  padding: clamp(56px, 8vw, 128px) clamp(16px, 4vw, 48px);
+}
+
+.claro {
+  background: var(--zg-blanco);
+}
+
+.crema {
+  background: var(--zg-crema);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 4vw, 72px);
+  align-items: center;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  font-size: clamp(10px, 0.3vw + 9px, 12px);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--zg-cian);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  margin-right: 10px;
+  border-radius: 999px;
+  vertical-align: middle;
+  background: var(--zg-espectro);
+}
+
+.titulo {
+  /* El relleno compensado deja los descendentes dentro de la máscara. */
+  margin: 0 0 -0.12em;
+  padding-bottom: 0.12em;
+  max-width: 18ch;
+  font-size: clamp(32px, 3.4vw + 16px, 62px);
+  line-height: 1.06;
+  color: var(--zg-tinta);
+  text-wrap: balance;
+}
+
+.parrafo {
+  max-width: 50ch;
+  margin: clamp(16px, 1.8vw, 22px) 0 0;
+  font-size: clamp(15px, 0.35vw + 13.8px, 17px);
+  line-height: 1.75;
+  color: var(--zg-tinta-suave);
+  text-wrap: pretty;
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: clamp(22px, 2.6vw, 32px) 0 0;
+  padding-top: clamp(18px, 2vw, 24px);
+  border-top: 1px solid var(--zg-linea);
+}
+
+.datoValor {
+  font-size: clamp(34px, 2.4vw + 22px, 58px);
+  line-height: 1;
+  color: var(--zg-tinta);
+}
+
+.datoTexto {
+  font-size: 13.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--zg-tenue);
+}
+
+.enlace {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-top: clamp(22px, 2.4vw, 30px);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--zg-tinta);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--zg-tinta);
+  text-decoration: none;
+  transition: color 240ms ease, border-color 240ms ease;
+}
+
+/* Amplía el área táctil del enlace a 44px sin mover el subrayado. */
+.enlace::after {
+  content: "";
+  position: absolute;
+  inset: -10px 0;
+}
+
+.media {
+  position: relative;
+}
+
+.principal {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--zg-piedra);
+}
+
+.secundaria {
+  display: none;
+}
+
+/* Capa de parallax: sobresale por arriba y por abajo para no destapar bordes. */
+.capa {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.principal .capa {
+  top: -9%;
+  bottom: -9%;
+}
+
+.secundaria .capa {
+  top: -20%;
+  bottom: -20%;
+}
+
+.imagen {
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.enlace:focus-visible {
+  outline: 2px solid var(--zg-cian);
+  outline-offset: 4px;
+}
+
+/* Contrato anti-destello: el enlace es enfocable, así que mientras la entrada
+   lo mantiene invisible tampoco debe ser alcanzable. La escena lo devuelve con
+   autoAlpha; sin JS la clase nunca existe y el enlace se sirve visible. */
+:global(html.motion) .enlace[data-entrada] {
+  visibility: hidden;
+}
+
+@media (min-width: 900px) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .invertido .texto {
+    order: 2;
+  }
+
+  .invertido .media {
+    order: 1;
+  }
+}
+
+/* Corte de comportamiento: coincide con CORTE.escritorio de app/lib/motion.ts,
+   que es donde la escena monta y anima la imagen secundaria. */
+@media (min-width: 1024px) {
+  .secundaria {
+    position: absolute;
+    display: block;
+    right: -6%;
+    bottom: -9%;
+    width: 46%;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    overflow: hidden;
+    border: 10px solid var(--zg-blanco);
+    background: var(--zg-piedra);
+  }
+
+  .invertido .secundaria {
+    right: auto;
+    left: -6%;
+  }
+
+  .crema .secundaria {
+    border-color: var(--zg-crema);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .principal:hover .imagen {
+    transform: scale(1.03);
+  }
+
+  .enlace:hover {
+    color: var(--zg-cian);
+    border-color: var(--zg-cian);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imagen,
+  .enlace {
+    transition: none;
+  }
+
+  .principal:hover .imagen {
+    transform: none;
+  }
+
+  /* Respaldo: anula cualquier estado que hubiera escrito la escena. */
+  .texto,
+  .eyebrow,
+  .titulo,
+  .parrafo,
+  .dato,
+  .enlace,
+  .principal,
+  .secundaria,
+  .capa {
+    opacity: 1 !important;
+    visibility: visible !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+}

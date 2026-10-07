@@ -1,5 +1,9 @@
 .page {
   width: 100%;
-  overflow-x: hidden;
-  background: var(--background-page);
+
+  min-height: 100vh;
+
+  background: var(--zg-blanco);
+
+  color: var(--zg-tinta);
 }

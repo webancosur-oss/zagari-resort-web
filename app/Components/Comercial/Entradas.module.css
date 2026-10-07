@@ -1,0 +1,72 @@
+.rejilla {
+  display: grid;
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 3vw, 32px);
+  border: 1px solid var(--zg-linea);
+  border-radius: 20px;
+  background: var(--zg-crema);
+}
+
+.titulo {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--zg-bosque);
+}
+
+.precios {
+  margin: 0;
+}
+
+.precios div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--zg-linea);
+}
+
+.precios dt {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--zg-tinta);
+}
+
+.precios dd {
+  margin: 0;
+}
+
+.monto {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--zg-bosque);
+}
+
+.detalle {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  color: var(--zg-tinta-suave);
+}
+
+.pie {
+  margin: 18px 0 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--zg-tinta-suave);
+}
+
+@media (min-width: 900px) {
+  .rejilla {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

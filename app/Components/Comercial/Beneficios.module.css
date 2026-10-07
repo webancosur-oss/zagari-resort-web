@@ -1,0 +1,154 @@
+.comparativa {
+  padding-top: 24px;
+}
+
+.intro {
+  max-width: 44rem;
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--zg-tinta-suave);
+}
+
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.selector {
+  display: inline-flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--zg-panel);
+}
+
+.opcion {
+  min-height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--zg-tinta-suave);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.opcion[aria-pressed="true"] {
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+}
+
+.opcion:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 2px;
+}
+
+.marco {
+  border: 1px solid var(--zg-linea);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--zg-blanco);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.tabla th,
+.tabla td {
+  padding: 16px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--zg-linea);
+}
+
+.tabla tbody tr:last-child th,
+.tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabla thead th {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--zg-tenue);
+  background: var(--zg-panel);
+}
+
+.tabla tbody th {
+  width: 34%;
+  font-weight: 600;
+  color: var(--zg-tinta);
+}
+
+.tabla td {
+  color: var(--zg-tinta-suave);
+  transition: background-color 260ms ease, color 260ms ease;
+}
+
+/* La columna elegida se destaca; en móvil es la única que se muestra. */
+.tabla[data-activa="plata"] [data-col="plata"],
+.tabla[data-activa="oro"] [data-col="oro"],
+.tabla[data-activa="platino"] [data-col="platino"] {
+  background: var(--zg-verde-suave);
+  color: var(--zg-bosque-oscuro);
+}
+
+.tabla[data-activa="plata"] thead [data-col="plata"],
+.tabla[data-activa="oro"] thead [data-col="oro"],
+.tabla[data-activa="platino"] thead [data-col="platino"] {
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+}
+
+.resumen {
+  margin: 20px 0 0;
+  font-size: 15px;
+  color: var(--zg-tinta-suave);
+}
+
+.resumen span {
+  font-size: 1.25em;
+  color: var(--zg-tinta);
+}
+
+@media (max-width: 699.98px) {
+  .selector {
+    display: flex;
+  }
+
+  .opcion {
+    flex: 1;
+    padding: 0 12px;
+  }
+
+  .tabla[data-activa="plata"] [data-col]:not([data-col="plata"]),
+  .tabla[data-activa="oro"] [data-col]:not([data-col="oro"]),
+  .tabla[data-activa="platino"] [data-col]:not([data-col="platino"]) {
+    display: none;
+  }
+
+  .tabla tbody th {
+    width: 44%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opcion,
+  .tabla td {
+    transition: none;
+  }
+}

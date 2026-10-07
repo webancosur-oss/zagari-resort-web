@@ -1,0 +1,421 @@
+.section {
+  --prof: 120px;
+  --giro: 2deg;
+  --mascara: 26%;
+  --escala: 1.14;
+  --entrada: 3%;
+  position: relative;
+}
+
+.claro {
+  background: var(--zg-blanco);
+}
+
+.crema {
+  background: var(--zg-crema);
+}
+
+.tinta {
+  background: var(--zg-tinta);
+  color: var(--zg-blanco);
+}
+
+/* Base sin coreografía: la baraja es una lista en rejilla, todo visible y con
+   scroll natural. Es lo que ve quien pidió reducir movimiento, quien tiene el
+   JS desactivado y quien se queda sin GSAP. Ningún estado inicial oculto
+   cuelga del CSS fuera de :global(html.motion). */
+.sticky {
+  display: flex;
+  align-items: center;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: clamp(18px, 3vw, 40px);
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 64px) clamp(20px, 5vw, 48px);
+}
+
+.cabecera {
+  max-width: 48ch;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: clamp(10px, 0.3vw + 9px, 12px);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--zg-cian);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  margin-right: 10px;
+  border-radius: 999px;
+  vertical-align: middle;
+  background: var(--zg-espectro);
+}
+
+.titulo {
+  margin: 0;
+  font-size: clamp(28px, 4.6vw, 52px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+/* El titular lleva data-entrada="mascara": el contrato de globals.css le da
+   la opacidad y el recorte iniciales, y este desplazamiento completa el estado
+   del que arranca el fromTo del componente (motion.distance.text * 0.6). */
+:global(html.motion) .titulo {
+  transform: translate3d(0, 24px, 0);
+}
+
+.tinta .titulo {
+  color: var(--zg-blanco);
+}
+
+.parrafo {
+  max-width: 50ch;
+  margin: 16px 0 0;
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.7;
+  color: var(--zg-tinta-suave);
+}
+
+.tinta .parrafo {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.pasos {
+  display: none;
+  margin: clamp(22px, 3vw, 34px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.paso {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 7px 0;
+  font-size: 14px;
+  color: var(--zg-tenue);
+  transition: color 320ms ease, transform 320ms ease;
+}
+
+.pasoNumero {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.pasoActivo {
+  color: var(--zg-tinta);
+  transform: translateX(6px);
+}
+
+.tinta .pasoActivo {
+  color: var(--zg-blanco);
+}
+
+.pasoActivo .pasoNumero {
+  color: var(--zg-acento);
+}
+
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 46px;
+  margin-top: clamp(20px, 3vw, 30px);
+  padding: 0 24px;
+  border-radius: 999px;
+  background: var(--zg-acento);
+  color: var(--zg-blanco);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 220ms ease, transform 220ms ease;
+}
+
+.enlace:focus-visible {
+  outline: 2px solid var(--zg-acento);
+  outline-offset: 3px;
+}
+
+.escena {
+  position: relative;
+}
+
+.pila {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 3vw, 30px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--zg-linea);
+  border-radius: 22px;
+  background: var(--zg-blanco);
+}
+
+.media {
+  position: relative;
+  flex: none;
+  aspect-ratio: 16 / 11;
+  margin: 0;
+  overflow: hidden;
+  background: var(--zg-piedra);
+}
+
+/* Capa que enmascara la foto; debajo queda la piedra de .media. */
+.marco {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.imagen {
+  object-fit: cover;
+}
+
+.indice {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(20, 32, 26, 0.62);
+  color: var(--zg-blanco);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  backdrop-filter: blur(6px);
+}
+
+.cuerpo {
+  position: relative;
+  flex: none;
+  padding: clamp(18px, 2.4vw, 28px);
+}
+
+.cuerpo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(18px, 2.4vw, 28px);
+  width: 44px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--zg-espectro);
+}
+
+.cardTitulo {
+  margin: 0 0 8px;
+  font-size: clamp(18px, 2.2vw, 23px);
+  font-weight: 600;
+  line-height: 1.24;
+  color: var(--zg-tinta);
+}
+
+.cardTexto {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.68;
+  color: var(--zg-tinta-suave);
+}
+
+/* ── Coreografía. Solo con html.motion, es decir solo cuando el JS corrió y
+   nadie pidió reducir movimiento. Todas las unidades de recorrido son svh:
+   el alto de .section menos el de .sticky es el scroll que consume el pin. ── */
+:global(html.motion) .section {
+  height: calc(var(--pasos) * 70svh + 100svh);
+}
+
+:global(html.motion) .sticky {
+  position: sticky;
+  top: 0;
+  min-height: 100svh;
+}
+
+:global(html.motion) .escena {
+  height: clamp(320px, 52svh, 560px);
+  perspective: 1200px;
+  perspective-origin: 50% 34%;
+  /* Recorta la tarjeta que sale sin comerse la sombra de la baraja. */
+  overflow: clip;
+  overflow-clip-margin: 56px;
+}
+
+:global(html.motion) .pila {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+}
+
+:global(html.motion) .card {
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 30px 70px rgba(20, 32, 26, 0.18);
+  transform-style: preserve-3d;
+  transform-origin: 50% 90%;
+  backface-visibility: hidden;
+}
+
+/* Solo la ventana de tarjetas que se mueve pide capa propia. */
+:global(html.motion) .enJuego {
+  will-change: transform, opacity;
+}
+
+/* Estado inicial de la baraja: replica el gsap.set por hueco, para que el HTML
+   servido ya nazca apilado y GSAP no mueva nada al tomar el control. */
+:global(html.motion) .card:nth-child(1) {
+  z-index: 9;
+  opacity: 1;
+}
+
+:global(html.motion) .card:nth-child(2) {
+  z-index: 8;
+  opacity: 0.78;
+  transform: translateY(7.5%) translateZ(calc(var(--prof) * -1))
+    rotateX(var(--giro));
+}
+
+:global(html.motion) .card:nth-child(3) {
+  z-index: 7;
+  opacity: 0.56;
+  transform: translateY(15%) translateZ(calc(var(--prof) * -2))
+    rotateX(calc(var(--giro) * 2));
+}
+
+:global(html.motion) .card:nth-child(4) {
+  z-index: 6;
+  opacity: 0.34;
+  transform: translateY(22.5%) translateZ(calc(var(--prof) * -3))
+    rotateX(calc(var(--giro) * 3));
+}
+
+:global(html.motion) .card:nth-child(n + 5) {
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(30%) translateZ(calc(var(--prof) * -4))
+    rotateX(calc(var(--giro) * 4));
+}
+
+:global(html.motion) .media {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+:global(html.motion) .marco {
+  clip-path: inset(0% 0% 0% 0%);
+  backface-visibility: hidden;
+}
+
+:global(html.motion) .card:nth-child(n + 2) .marco {
+  clip-path: inset(0% 0% 0% var(--mascara));
+}
+
+/* El encuadre y el desplazamiento de entrada replican el gsap.set de la foto,
+   para que al hidratar no se vea el salto de escala. */
+:global(html.motion) .imagen {
+  transform: scale(var(--escala));
+  backface-visibility: hidden;
+}
+
+:global(html.motion) .card:nth-child(n + 2) .imagen {
+  transform: translateY(var(--entrada)) scale(var(--escala));
+}
+
+@media (max-width: 999px) and (max-height: 760px) {
+  .parrafo {
+    display: none;
+  }
+}
+
+@media (min-width: 1000px) {
+  .inner {
+    grid-template-columns: minmax(0, 0.84fr) minmax(0, 1fr);
+    gap: clamp(40px, 5vw, 80px);
+  }
+
+  .pasos {
+    display: block;
+  }
+
+  :global(html.motion) .escena {
+    height: clamp(420px, 66svh, 640px);
+  }
+}
+
+/* Los cortes del perfil de la baraja y del recorrido del pin son los de
+   CORTE en app/lib/motion.ts: el matchMedia del componente cambia de perfil
+   justo aquí. */
+@media (max-width: 1023.98px) {
+  .section {
+    --prof: 90px;
+    --giro: 1.6deg;
+    --mascara: 20%;
+    --escala: 1.11;
+    --entrada: 2.25%;
+  }
+
+  :global(html.motion) .section {
+    height: calc(var(--pasos) * 58svh + 100svh);
+  }
+}
+
+@media (max-width: 699.98px) {
+  .section {
+    --prof: 60px;
+    --giro: 1.2deg;
+    --mascara: 16%;
+    --escala: 1.08;
+    --entrada: 1.5%;
+  }
+
+  :global(html.motion) .section {
+    height: calc(var(--pasos) * 42svh + 100svh);
+  }
+}
+
+@media (min-width: 700px) {
+  .pila {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .enlace:hover {
+    background: var(--zg-cian);
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paso,
+  .enlace {
+    transition: none;
+  }
+}

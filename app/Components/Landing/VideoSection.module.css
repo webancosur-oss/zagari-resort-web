@@ -1,0 +1,243 @@
+.section {
+  position: relative;
+  background: var(--zg-tinta);
+  isolation: isolate;
+}
+
+.escena {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(420px, 72vh, 760px);
+}
+
+.marco {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  clip-path: inset(0% 0% 0% 0% round 0px);
+}
+
+/* Holgura vertical para el parallax; el marco recorta lo que sobra. */
+.media {
+  position: absolute;
+  inset: -16% 0;
+}
+
+.poster,
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video {
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.videoActivo {
+  opacity: 1;
+}
+
+/* Los rgba de este módulo son solo transparencias: 20 32 26 es el RGB de
+   --zg-tinta y 255 255 255 el de --zg-blanco. Ningún oscuro propio. */
+.velo {
+  --velo-reposo: 0.55;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: var(--velo-reposo);
+  background: linear-gradient(
+    to top,
+    rgba(20, 32, 26, 0.94) 0%,
+    rgba(20, 32, 26, 0.54) 48%,
+    rgba(20, 32, 26, 0.2) 100%
+  );
+}
+
+.contenido {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(32px, 7vw, 76px) clamp(20px, 5vw, 48px);
+  color: var(--zg-blanco);
+}
+
+.interior {
+  position: relative;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  margin-right: 10px;
+  border-radius: 999px;
+  vertical-align: middle;
+  background: var(--zg-espectro);
+}
+
+.titulo {
+  max-width: 17ch;
+  margin: 0;
+  font-size: clamp(30px, 5.6vw, 58px);
+  font-weight: 400;
+  line-height: 1.08;
+}
+
+.parrafo {
+  max-width: 54ch;
+  margin: 16px 0 0;
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.control {
+  position: absolute;
+  top: clamp(20px, 4vw, 40px);
+  right: clamp(20px, 5vw, 48px);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  background: rgba(20, 32, 26, 0.38);
+  color: var(--zg-blanco);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background-color 220ms ease, border-color 220ms ease;
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--zg-blanco);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .control:hover {
+    background: rgba(20, 32, 26, 0.6);
+    border-color: var(--zg-blanco);
+  }
+}
+
+/* Contrato anti-destello. html.motion solo existe si el JS corrió y el usuario
+   no pidió reducir movimiento; data-entrada ya aplica opacity 0 en globals.css
+   y aquí se declara el resto del estado inicial que la coreografía escribe al
+   hidratar, para que el HTML servido nazca igual. Los saltos son
+   motion.distance.text (40) por 0.4 en móvil, 0.6 en tablet y 0.8 arriba. */
+:global(html.motion) .eyebrow,
+:global(html.motion) .titulo,
+:global(html.motion) .parrafo {
+  visibility: hidden;
+  transform: translate3d(0, 16px, 0);
+  clip-path: inset(0% -6% 100% -6%);
+}
+
+/* Por debajo de la tablet el velo no se revela con el scroll: nace en reposo. */
+@media (max-width: 699.98px) {
+  :global(html.motion) .velo[data-entrada] {
+    opacity: var(--velo-reposo);
+  }
+}
+
+/* Escritorio y tablet: la sección queda fijada mientras dura el recorrido.
+   Este corte es CORTE.tablet y debe seguir a MEDIOS.tablet de motion.ts. */
+@media (min-width: 700px) {
+  .section {
+    min-height: calc(100svh + var(--recorrido, 120vh));
+  }
+
+  .escena {
+    position: sticky;
+    top: 0;
+    /* dvh y no svh: al retraerse la barra del navegador el viewport crece y
+       con svh quedaba un hueco bajo el marco. */
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  /* Encuadre y zoom del FRAME A ya en el HTML servido. Replica ENCUADRE y
+     el zoom inicial del módulo. */
+  :global(html.motion) .marco {
+    clip-path: inset(4% 5% 4% 5% round 16px);
+  }
+
+  :global(html.motion) .media {
+    transform: scale(1.08);
+  }
+
+  :global(html.motion) .eyebrow,
+  :global(html.motion) .titulo,
+  :global(html.motion) .parrafo {
+    transform: translate3d(0, 24px, 0);
+  }
+
+  /* Solo mientras la sección cruza el viewport: con dos instancias en la
+     portada, promoverlas siempre serían cuatro capas permanentes. */
+  .enJuego .marco {
+    will-change: clip-path;
+  }
+
+  .enJuego .media {
+    will-change: transform;
+  }
+}
+
+/* CORTE.escritorio: el perfil ancho de MEDIOS.escritorio empieza aquí. */
+@media (min-width: 1024px) {
+  :global(html.motion) .marco {
+    clip-path: inset(6% 8% 6% 8% round 24px);
+  }
+
+  :global(html.motion) .media {
+    transform: scale(1.12);
+  }
+
+  :global(html.motion) .eyebrow,
+  :global(html.motion) .titulo,
+  :global(html.motion) .parrafo {
+    transform: translate3d(0, 32px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    transition: none;
+  }
+}
+
+/* Sin movimiento no hay recorrido que consumir: la sección vuelve a su alto. */
+@media (prefers-reduced-motion: reduce) and (min-width: 700px) {
+  .section {
+    min-height: clamp(420px, 72vh, 760px);
+  }
+
+  .escena {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: clamp(420px, 72vh, 760px);
+  }
+}

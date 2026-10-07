@@ -1,0 +1,43 @@
+.lockup {
+  --brand-zagari: #59a946;
+  --brand-resort: #d2b12e;
+  --brand-club: #ae4d34;
+
+  font-size: clamp(26px, 1.4vw + 21.5px, 34px);
+
+  line-height: 1;
+
+  font-weight: 300;
+
+  letter-spacing: -0.035em;
+}
+
+.inline {
+  display: inline;
+}
+
+.block {
+  display: block;
+
+  margin: 0;
+}
+
+.zagari,
+.resort,
+.club {
+  white-space: nowrap;
+
+  font-weight: 300;
+}
+
+.zagari {
+  color: var(--brand-zagari);
+}
+
+.resort {
+  color: var(--brand-resort);
+}
+
+.club {
+  color: var(--brand-club);
+}

@@ -1,57 +1,34 @@
+import LandingHero from "./Components/Landing/LandingHero";
+import { CategoriaProvider } from "./Components/Comercial/CategoriaElegida";
+import Presentacion from "./Components/Comercial/Presentacion";
+import Membresias from "./Components/Comercial/Membresias";
+import Experiencias from "./Components/Comercial/Experiencias";
+import Puntos from "./Components/Comercial/Puntos";
+import Visita from "./Components/Comercial/Visita";
+import Preguntas from "./Components/Comercial/Preguntas";
+import Contacto from "./Components/Comercial/Contacto";
+import LocationRoute from "./Components/LocationRoute/LocationRoute";
 
-
-import ElClubSection from "./components/ElClubSection/ElClubSection";
-import FaqSection from "./components/Faq/FaqSection";
-import HeroSection from "./components/home/HeroSection";
-import HomeContactForm from "./components/home/HomeContactForm";
-import HowItWorksSection from "./components/HowWorksSection/HowWorksSection";
-import LocationSection from "./components/LocationSection/LocationSection";
-import ZagariManifesto from "./components/Manifesto/ZagariManifesto";
-import MembershipsSection from "./components/MebresiaSection/MembershipsSection";
-import OwnerSection from "./components/OwnerSection/OwnerSection";
-import PointsSection from "./components/PointSection/PointSection";
-import ZagariExperience from "./components/ZagariExperience/ExperienceSection";
 import styles from "./page.module.css";
 
-export default function HomePage() {
+export default function Home() {
   return (
     <main className={styles.page}>
+      <CategoriaProvider>
+        <LandingHero />
+        <Presentacion />
+        <Membresias />
+        <Experiencias />
+        <Puntos />
+        <Visita />
+        <Preguntas />
 
-      <HeroSection />
+        <div id="ubicacion">
+          <LocationRoute />
+        </div>
 
-      <ElClubSection />
-
-      <ZagariExperience />
-
-      <MembershipsSection /> 
-
-      <PointsSection />
-      
-      <HowItWorksSection />
-
-      <OwnerSection />
-
-      {/* <CinematicExperience /> */}
-
-      {/* <LotsSection/> */}
-
-      {/* <AmenitiesSection /> */}
-
-      {/* <HomeHero /> */}
-
-      {/* <NearbyExperiences /> */}
-
-      {/* <CabinsSection /> */}
-
-      <LocationSection />
-
-      <FaqSection />
-
-      <ZagariManifesto />
-
-      <HomeContactForm />
-
-      {/* <FinalCta /> */}
+        <Contacto />
+      </CategoriaProvider>
     </main>
   );
 }

@@ -1,0 +1,175 @@
+.section {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(380px, 62vh, 620px);
+  overflow: hidden;
+  background: var(--zg-tinta);
+  isolation: isolate;
+}
+
+/* Sangrado vertical: deja recorrido al parallax sin descubrir los bordes. */
+.marco {
+  position: absolute;
+  inset: -14% 0;
+  display: block;
+  z-index: -2;
+  will-change: transform;
+}
+
+.imagen {
+  object-fit: cover;
+}
+
+/* rgba(20, 32, 26, …) es --zg-tinta (#14201a) con alfa: no hay token rgba. */
+.velo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(20, 32, 26, 0.82) 0%,
+    rgba(20, 32, 26, 0.38) 52%,
+    rgba(20, 32, 26, 0.14) 100%
+  );
+}
+
+.contenido {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(40px, 8vw, 92px) clamp(20px, 5vw, 48px)
+    clamp(44px, 7vw, 84px);
+  color: var(--zg-blanco);
+}
+
+/* Mismo corte que CORTE.tablet: por debajo este bloque no tiene parallax y no
+   necesita capa de composición propia. */
+@media (min-width: 700px) {
+  .contenido {
+    will-change: transform;
+  }
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  margin-right: 10px;
+  border-radius: 999px;
+  vertical-align: middle;
+  background: var(--zg-espectro);
+}
+
+.titulo {
+  max-width: 16ch;
+  margin: 0;
+  font-size: clamp(32px, 6.4vw, 68px);
+  font-weight: 400;
+  line-height: 1.06;
+}
+
+.parrafo {
+  max-width: 56ch;
+  margin: 18px 0 0;
+  font-size: clamp(15px, 1.7vw, 18px);
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  margin-top: clamp(22px, 3vw, 32px);
+  padding: 0 26px;
+  border-radius: 999px;
+  background: var(--zg-blanco);
+  color: var(--zg-tinta);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 220ms ease, color 220ms ease,
+    transform 220ms ease;
+}
+
+/* El botón ya es blanco: el anillo de foco necesita otro color. */
+.cta:focus-visible {
+  outline: 3px solid var(--zg-acento);
+  outline-offset: 3px;
+}
+
+.espectro {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform-origin: 0 50%;
+  background: var(--zg-espectro);
+}
+
+/* Contrato anti-destello. El texto cuelga de [data-entrada] en globals.css;
+   aquí se declaran los estados iniciales que ese contrato no cubre: la escala
+   de partida del fondo y la franja colapsada. Siempre bajo html.motion, que
+   solo existe si el JS corrió sin reduced-motion: sin él el hero nace quieto
+   y visible. Las escalas repiten ZOOM en PageHero.tsx. */
+:global(html.motion) .marco {
+  transform: scale(1.03);
+}
+
+:global(html.motion) .espectro {
+  transform: scaleX(0);
+}
+
+/* El CTA entra con autoAlpha: tampoco debe ser enfocable antes de animarse. */
+:global(html.motion) .cta {
+  visibility: hidden;
+}
+
+/* Mismos cortes que CORTE: aquí cambia el perfil de zoom de la entrada. */
+@media (min-width: 700px) {
+  :global(html.motion) .marco {
+    transform: scale(1.05);
+  }
+}
+
+@media (min-width: 1024px) {
+  :global(html.motion) .marco {
+    transform: scale(1.08);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cta:hover {
+    background: var(--zg-acento);
+    color: var(--zg-blanco);
+    transform: translateY(-2px);
+  }
+}
+
+/* El cambio de color se queda; el desplazamiento no. Se repite el selector
+   con :hover para ganarle al bloque anterior, que tiene la misma
+   especificidad. */
+@media (prefers-reduced-motion: reduce) {
+  .cta,
+  .cta:hover {
+    transition: none;
+    transform: none;
+  }
+
+  .marco,
+  .contenido {
+    will-change: auto;
+  }
+}
