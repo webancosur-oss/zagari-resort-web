@@ -145,26 +145,14 @@
   color: var(--zg-tinta-suave);
 }
 
+/* Quién la tiene: sustituye al precio mientras las tarifas no estén aprobadas. */
 .precio {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 10px;
-  margin: 18px 0 0;
+  margin: 14px 0 0;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--zg-linea);
-}
-
-.monto {
-  font-size: clamp(2.2rem, 3.4vw, 2.8rem);
-  line-height: 1;
+  font-size: 14.5px;
+  line-height: 1.55;
   color: var(--zg-tinta);
-}
-
-.periodo {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--zg-tenue);
 }
 
 .beneficios {
@@ -309,58 +297,36 @@
   }
 }
 
-/* ── Comparativa desplegable ── */
-.desplegable {
-  margin-top: clamp(20px, 3vw, 28px);
-  border-top: 1px solid var(--zg-linea);
-  border-bottom: 1px solid var(--zg-linea);
+
+/* ── Vistas deslizables: elige tu membresía / beneficios ── */
+.vista {
+  animation: 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.desplegar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 60px;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--zg-tinta);
-  cursor: pointer;
-  list-style: none;
+.desdeDerecha {
+  animation-name: desdeDerecha;
 }
 
-.desplegar::-webkit-details-marker {
-  display: none;
+.desdeIzquierda {
+  animation-name: desdeIzquierda;
 }
 
-.desplegar:focus-visible {
-  outline: 2px solid var(--zg-bosque);
-  outline-offset: 4px;
-  border-radius: 4px;
+@keyframes desdeDerecha {
+  from {
+    opacity: 0;
+    translate: 48px 0;
+  }
 }
 
-.flecha {
-  flex: none;
-  color: var(--zg-bosque);
-  transition: rotate 260ms ease;
-}
-
-.desplegable[open] .flecha {
-  rotate: 180deg;
-}
-
-.desplegable[open] {
-  padding-bottom: 24px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .desplegar:hover {
-    color: var(--zg-bosque);
+@keyframes desdeIzquierda {
+  from {
+    opacity: 0;
+    translate: -48px 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flecha {
-    transition: none;
+  .vista {
+    animation: none;
   }
 }

@@ -8,7 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import FooterIcon from "../Footer/FooterIcon";
-import { CLUB, NAV } from "./landing.data";
+import { CLUB, NAV_PIE } from "./landing.data";
 import { MEDIOS, motion, sinMovimiento } from "../../lib/motion";
 
 import styles from "./LandingFooter.module.css";
@@ -225,7 +225,7 @@ export default function LandingFooter() {
           <nav aria-label="Secciones" data-entrada="sube">
             <h2 className={styles.columnaTitulo}>Secciones</h2>
             <ul className={styles.lista}>
-              {NAV.map((n) => (
+              {NAV_PIE.map((n) => (
                 <li key={n.href}>
                   <Link href={n.href} className={styles.enlace}>
                     {n.label}

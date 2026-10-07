@@ -39,6 +39,9 @@ interface ContactFormProps {
 
   /** Contenido junto al formulario; con él, la sección pasa a dos columnas. */
   complemento?: ReactNode;
+
+  /** Mensaje ya escrito, p. ej. con lo elegido en el buscador de reservas. */
+  mensajeInicial?: string;
 }
 
 const VACIO = {
@@ -61,10 +64,12 @@ export default function ContactForm({
   nombreFormulario,
   tipoFormulario = "contacto",
   complemento,
+  mensajeInicial = "",
 }: ContactFormProps) {
   const [campos, setCampos] = useState({
     ...VACIO,
-    tipo: selectOptions?.[0]?.value ?? "",
+    tipo: selectValue ?? selectOptions?.[0]?.value ?? "",
+    mensaje: mensajeInicial,
   });
   const [errores, setErrores] = useState<Errores>({});
   const [enviando, setEnviando] = useState(false);

@@ -1,13 +1,11 @@
-import LandingHero from "./Components/Landing/LandingHero";
-import { CategoriaProvider } from "./Components/Comercial/CategoriaElegida";
-import Presentacion from "./Components/Comercial/Presentacion";
-import Membresias from "./Components/Comercial/Membresias";
-import Experiencias from "./Components/Comercial/Experiencias";
-import Puntos from "./Components/Comercial/Puntos";
-import Visita from "./Components/Comercial/Visita";
-import Preguntas from "./Components/Comercial/Preguntas";
-import Contacto from "./Components/Comercial/Contacto";
-import LocationRoute from "./Components/LocationRoute/LocationRoute";
+import HeroInicio from "./Components/Sitio/HeroInicio";
+import DestinosInicio from "./Components/Sitio/DestinosInicio";
+import Ventajas from "./Components/Sitio/Ventajas";
+import Promociones from "./Components/Sitio/Promociones";
+import Cercanos from "./Components/Sitio/Cercanos";
+import ExperienciaZagari from "./Components/Sitio/ExperienciaZagari";
+import MembresiasResumen from "./Components/Sitio/MembresiasResumen";
+import LlamadoFinal from "./Components/Sitio/LlamadoFinal";
 import DatosEstructurados from "./Components/Seo/DatosEstructurados";
 
 import styles from "./page.module.css";
@@ -16,21 +14,14 @@ export default function Home() {
   return (
     <main className={styles.page}>
       <DatosEstructurados />
-      <CategoriaProvider>
-        <LandingHero />
-        <Presentacion />
-        <Membresias />
-        <Experiencias />
-        <Puntos />
-        <Visita />
-        <Preguntas />
-
-        <div id="ubicacion">
-          <LocationRoute />
-        </div>
-
-        <Contacto />
-      </CategoriaProvider>
+      <HeroInicio />
+      <DestinosInicio />
+      <Ventajas />
+      <Promociones />
+      <Cercanos />
+      <ExperienciaZagari />
+      <MembresiasResumen />
+      <LlamadoFinal />
     </main>
   );
 }

@@ -1,0 +1,146 @@
+/* ── Al ser propietario ── */
+.dorado {
+  padding: clamp(24px, 4vw, 48px);
+  border-radius: 28px;
+  background: linear-gradient(160deg, #fbf3dc 0%, #f3e3b6 100%);
+}
+
+.beneficio {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(18px, 2vw, 24px);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 4px;
+  border-radius: 12px;
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+}
+
+/* ── Plan maestro ── */
+.plan {
+  display: grid;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+}
+
+.planTexto {
+  display: grid;
+  gap: 18px;
+}
+
+.planTexto header {
+  margin-bottom: 0;
+}
+
+.area {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--zg-tinta-suave);
+}
+
+.area strong {
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--zg-bosque);
+}
+
+.plano {
+  margin-top: 6px;
+}
+
+.planImagen {
+  margin: 0;
+  padding: clamp(14px, 2vw, 24px);
+  border-radius: 24px;
+  background: var(--zg-bosque-profundo);
+}
+
+.planImagen img {
+  width: 100%;
+  height: auto;
+}
+
+.planImagen figcaption {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ventajas {
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+/* ── Modelos de cabaña ── */
+.modelos {
+  display: grid;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+}
+
+.lodge {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.lodge img {
+  object-fit: cover;
+  object-position: 50% 88%;
+}
+
+.modelo {
+  display: grid;
+  gap: 10px;
+}
+
+.modelo p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--zg-crema);
+}
+
+.modeloFoto {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--zg-bosque-oscuro);
+}
+
+.modeloFoto img {
+  object-fit: cover;
+}
+
+.nota {
+  margin: 18px 0 0;
+  font-size: 12px;
+  color: rgba(251, 248, 241, 0.6);
+}
+
+@media (min-width: 1024px) {
+  .plan {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .modelos {
+    grid-template-columns: 0.8fr 1.4fr;
+  }
+
+  .lodge {
+    min-height: 620px;
+  }
+}

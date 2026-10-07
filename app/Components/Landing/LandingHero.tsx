@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight, Pause, Play } from "reicon-react";
 
-import { desplazarA } from "../SmoothScroll/SmoothScroll";
 import { CLUB } from "./landing.data";
 
 import styles from "./LandingHero.module.css";
@@ -15,7 +15,18 @@ const POSTER = "/assets/images/heroes/hero-tiger-poster.jpg";
 
 type Conexion = Navigator & { connection?: { saveData?: boolean } };
 
-export default function LandingHero() {
+interface LandingHeroProps {
+  lugar?: string;
+  parrafo?: string;
+  primario?: { label: string; href: string };
+}
+
+/** Hero del video del jaguar. Hoy es la cabecera de Experiencias. */
+export default function LandingHero({
+  lugar = "San Ramón · Selva Central",
+  parrafo = "Vive diferente en San Ramón. Un club privado de naturaleza, descanso y experiencias.",
+  primario = { label: "Hazte socio", href: "/membresias" },
+}: LandingHeroProps) {
   const seccionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const pausaManual = useRef(false);
@@ -83,7 +94,7 @@ export default function LandingHero() {
   };
 
   return (
-    <section ref={seccionRef} className={styles.section} id="inicio">
+    <section ref={seccionRef} className={styles.section}>
       <div className={styles.tarjeta}>
         <div className={styles.media}>
           <Image
@@ -124,23 +135,13 @@ export default function LandingHero() {
         </button>
 
         <div className={`${styles.lateral} ${styles.fadeRiseDelay}`}>
-          <p className={styles.lugar}>San Ramón · Selva Central</p>
-          <p className={styles.parrafo}>
-            Vive diferente en San Ramón. Un club privado de naturaleza,
-            descanso y experiencias donde el socio paga una vez al año y cada
-            visita le conviene más que la anterior.
-          </p>
+          <p className={styles.lugar}>{lugar}</p>
+          <p className={styles.parrafo}>{parrafo}</p>
 
           <div className={styles.acciones}>
-            <a
-              href="#membresias"
-              className={styles.primario}
-              onClick={(e) => {
-                if (desplazarA("#membresias")) e.preventDefault();
-              }}
-            >
-              Hazte socio
-            </a>
+            <Link href={primario.href} className={styles.primario}>
+              {primario.label}
+            </Link>
 
             <a
               href={CLUB.whatsapp}

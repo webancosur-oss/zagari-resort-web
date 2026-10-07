@@ -1,11 +1,11 @@
 "use client";
 
-import { BENEFICIOS, CATEGORIAS, soles, type IdCategoria } from "../../lib/modelo";
+import { BENEFICIOS, CATEGORIAS, type IdCategoria } from "../../lib/modelo";
 import { useCategoria } from "./CategoriaElegida";
 
 import styles from "./Beneficios.module.css";
 
-/** Comparativa completa; vive dentro del desplegable de Membresías. */
+/** Comparativa completa: la vista "Beneficios" de Membresías. */
 export default function Beneficios() {
   const { categoria, elegir } = useCategoria();
   // Sin elección previa se muestra Oro: es la categoría con que entran los propietarios.
@@ -64,8 +64,7 @@ export default function Beneficios() {
       </div>
 
       <p className={styles.resumen} aria-live="polite">
-        <span className="display">{elegida.nombre}</span> · {soles(elegida.precio)} al año,
-        tarifa propuesta. {elegida.ingreso}.
+        <span className="display">{elegida.nombre}</span> · {elegida.queEs}. {elegida.ingreso}.
       </p>
     </div>
   );

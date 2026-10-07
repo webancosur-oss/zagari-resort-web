@@ -1,0 +1,373 @@
+/* Piezas compartidas por las secciones del sitio. Las bases de sección
+   (.seccion, .inner, .panel, .boton) viven en Comercial/comercial.module.css. */
+
+/* ── Rejillas ── */
+.rejilla {
+  display: grid;
+  gap: clamp(14px, 1.6vw, 22px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dos,
+.tres,
+.cuatro {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .dos,
+  .cuatro {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tres {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .tres {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cuatro {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ── Tarjeta ── */
+.tarjeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--zg-panel);
+  color: var(--zg-tinta);
+}
+
+.blanca {
+  background: var(--zg-blanco);
+  border: 1px solid var(--zg-linea);
+}
+
+.foto {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--zg-piedra);
+}
+
+.fotoAncha {
+  aspect-ratio: 16 / 10;
+}
+
+.foto img {
+  object-fit: cover;
+  transition: scale 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Sin foto disponible: fondo de marca con el nombre del lugar. */
+.sinFoto {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 90% at 20% 10%, rgba(23, 168, 87, 0.45), transparent 60%),
+    linear-gradient(160deg, var(--zg-bosque) 0%, var(--zg-bosque-profundo) 100%);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cuerpo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(16px, 1.8vw, 24px);
+}
+
+.etiqueta {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zg-bosque);
+}
+
+.titulo {
+  margin: 0;
+  font-family: var(--font-display), "Inter", system-ui, sans-serif;
+  font-size: clamp(1.2rem, 1.6vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.texto {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--zg-tinta-suave);
+  text-wrap: pretty;
+}
+
+.lista {
+  display: grid;
+  gap: 8px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.lista li {
+  display: flex;
+  gap: 8px;
+}
+
+.lista svg {
+  flex: none;
+  margin-top: 1px;
+  color: var(--zg-bosque);
+}
+
+.enlaceFlecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--zg-bosque);
+  text-decoration: none;
+}
+
+.enlaceFlecha svg {
+  transition: translate 240ms ease;
+}
+
+.enlaceFlecha:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* La tarjeta entera responde cuando el enlace la cubre. */
+.cubre::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.referencial {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--zg-tenue);
+}
+
+/* ── Pestañas ── */
+.pestanas {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 clamp(18px, 2.4vw, 28px);
+  padding: 5px;
+  border-radius: 999px;
+  background: var(--zg-panel);
+}
+
+.pestana {
+  min-height: 44px;
+  padding: 0 clamp(16px, 2vw, 24px);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--zg-tinta-suave);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
+}
+
+.pestana[aria-selected="true"] {
+  background: var(--zg-blanco);
+  color: var(--zg-bosque-oscuro);
+  box-shadow: 0 2px 10px rgba(23, 33, 28, 0.1);
+}
+
+.pestana:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 2px;
+}
+
+.pildora {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--zg-ambar);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--zg-tinta);
+  vertical-align: 1px;
+}
+
+/* ── Carrusel horizontal con imán ── */
+.carrusel {
+  display: grid;
+  grid-auto-columns: minmax(260px, 82%);
+  grid-auto-flow: column;
+  gap: clamp(14px, 1.6vw, 22px);
+  margin: 0;
+  padding: 0 0 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.carrusel::-webkit-scrollbar {
+  display: none;
+}
+
+.carrusel > * {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .carrusel {
+    grid-auto-columns: calc((100% - 22px) / 2);
+  }
+}
+
+@media (min-width: 1024px) {
+  .carrusel {
+    grid-auto-columns: calc((100% - 2 * 22px) / 3);
+  }
+}
+
+@media (min-width: 1400px) {
+  .carrusel {
+    grid-auto-columns: calc((100% - 3 * 22px) / 4);
+  }
+}
+
+.flechas {
+  display: flex;
+  gap: 8px;
+}
+
+.flecha {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--zg-linea);
+  border-radius: 999px;
+  background: var(--zg-blanco);
+  color: var(--zg-tinta);
+  cursor: pointer;
+  transition: background-color 200ms ease, opacity 200ms ease;
+}
+
+.flecha:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.flecha:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 2px;
+}
+
+/* ── Chips ── */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 8px 14px;
+  border: 1px solid var(--zg-linea);
+  border-radius: 999px;
+  background: var(--zg-blanco);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--zg-tinta);
+}
+
+/* ── Acciones ── */
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.botonClaro {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--zg-linea);
+  border-radius: 8px;
+  background: var(--zg-blanco);
+  color: var(--zg-tinta);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.botonClaro:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tarjeta:hover .foto img {
+    scale: 1.04;
+  }
+
+  .tarjeta:hover .enlaceFlecha svg,
+  .enlaceFlecha:hover svg {
+    translate: 4px 0;
+  }
+
+  .flecha:not(:disabled):hover {
+    background: var(--zg-panel);
+  }
+
+  .pestana[aria-selected="false"]:hover {
+    color: var(--zg-tinta);
+  }
+
+  .botonClaro:hover {
+    background: var(--zg-panel);
+    border-color: rgba(23, 33, 28, 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foto img,
+  .enlaceFlecha svg {
+    transition: none;
+  }
+}

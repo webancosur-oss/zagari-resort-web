@@ -1,0 +1,79 @@
+.elemento {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(340px, 34vw, 460px);
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--zg-bosque-oscuro);
+  color: var(--zg-blanco);
+}
+
+.imagen {
+  object-fit: cover;
+  transition: scale 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(3, 45, 32, 0.92) 0%, rgba(3, 45, 32, 0.35) 55%, rgba(3, 45, 32, 0) 80%);
+}
+
+.texto {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: clamp(18px, 2vw, 26px);
+}
+
+.nombre {
+  margin: 0;
+  font-family: var(--font-display), "Inter", system-ui, sans-serif;
+  font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.lema {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.incluye {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--zg-blanco);
+  text-decoration: none;
+}
+
+.enlace:focus-visible {
+  outline: 2px solid var(--zg-blanco);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .elemento:hover .imagen {
+    scale: 1.05;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imagen {
+    transition: none;
+  }
+}

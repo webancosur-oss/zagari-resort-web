@@ -1,0 +1,119 @@
+/* Índice pegado bajo la barra: salta a cada elemento. */
+.indice {
+  position: sticky;
+  top: var(--alto-nav, 72px);
+  z-index: 5;
+  border-bottom: 1px solid var(--zg-linea);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+}
+
+.indiceLista {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 10px clamp(16px, 4vw, 64px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.indiceLista::-webkit-scrollbar {
+  display: none;
+}
+
+.indiceEnlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--zg-panel);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--zg-tinta);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.indiceEnlace svg {
+  color: var(--tono);
+}
+
+.indiceEnlace:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 2px;
+}
+
+.agua {
+  --tono: var(--zg-azul);
+  --fondo: #e2f2f8;
+}
+
+.aire {
+  --tono: var(--zg-cian);
+  --fondo: #dff4f2;
+}
+
+.fuego {
+  --tono: #d9480f;
+  --fondo: #fdebd9;
+}
+
+.tierra {
+  --tono: var(--zg-bosque);
+  --fondo: var(--zg-verde-suave);
+}
+
+/* Bajo la barra y el índice pegado. Doble clase: gana a "main [id]". */
+.ancla.ancla {
+  scroll-margin-top: calc(var(--alto-nav, 72px) + 64px);
+}
+
+.alterna {
+  background: var(--zg-panel);
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: clamp(22px, 3vw, 36px);
+}
+
+.sello {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: var(--fondo);
+  color: var(--tono);
+}
+
+.nombre {
+  margin: 0;
+  font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.lema {
+  margin: 6px 0 0;
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  color: var(--zg-tinta-suave);
+}
+
+.amenidades {
+  margin-top: clamp(18px, 2.4vw, 28px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .indiceEnlace:hover {
+    background: var(--fondo);
+  }
+}

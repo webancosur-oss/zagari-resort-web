@@ -1,0 +1,148 @@
+.tarjeta {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(420px, 34vw, 460px);
+  overflow: hidden;
+  border-radius: 28px;
+  background: var(--zg-bosque-profundo);
+  color: var(--zg-blanco);
+}
+
+.imagen {
+  object-fit: cover;
+}
+
+.velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(3, 45, 32, 0.92) 0%, rgba(3, 45, 32, 0.5) 50%, rgba(3, 45, 32, 0.15) 100%);
+}
+
+.contenido {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  width: 100%;
+  max-width: 760px;
+  padding: clamp(24px, 4vw, 56px);
+}
+
+.titulo {
+  margin: 4px 0 0;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.region {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.texto {
+  max-width: 52ch;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.formulario {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.campo {
+  display: grid;
+  gap: 4px;
+}
+
+.campo input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--zg-tinta);
+  font: inherit;
+  font-size: 15px;
+}
+
+.campo input[aria-invalid="true"] {
+  border-color: #ffb4b4;
+}
+
+.campo input:focus-visible {
+  outline: 2px solid var(--zg-verde);
+  outline-offset: 1px;
+}
+
+.error {
+  font-size: 13px;
+  color: #ffd0d0;
+}
+
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.enviar {
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.enviar:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.enviar:focus-visible {
+  outline: 2px solid var(--zg-blanco);
+  outline-offset: 2px;
+}
+
+.listo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  font-weight: 600;
+}
+
+@media (min-width: 760px) {
+  .formulario {
+    grid-template-columns: 1fr 1fr auto;
+    align-items: start;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .enviar:not(:disabled):hover {
+    background: var(--zg-bosque-oscuro);
+  }
+}

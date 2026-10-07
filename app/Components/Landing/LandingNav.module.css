@@ -95,15 +95,15 @@
   transition: scale 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.enlace[aria-current="true"] {
+.enlace[aria-current="page"] {
   color: var(--zg-tinta);
 }
 
-.enlace[aria-current="true"]::after {
+.enlace[aria-current="page"]::after {
   scale: 1 1;
 }
 
-.cta[aria-current="true"] {
+.cta[aria-current="page"] {
   background: var(--zg-bosque);
   color: var(--zg-blanco);
 }
@@ -229,7 +229,7 @@
     display: none;
   }
 
-  .enlace[aria-current="true"] {
+  .enlace[aria-current="page"] {
     background: var(--zg-verde-suave);
     color: var(--zg-bosque-oscuro);
   }

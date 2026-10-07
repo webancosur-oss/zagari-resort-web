@@ -1,0 +1,23 @@
+.franja {
+  display: block;
+  height: 10px;
+}
+
+.plata {
+  background: linear-gradient(90deg, #c9ced2, #f1f3f4, #aab1b6);
+}
+
+.oro {
+  background: linear-gradient(90deg, #c99a2e, #f3dd8f, #b9861f);
+}
+
+.platino {
+  background: linear-gradient(90deg, #3a4148, #9aa3ab, #2a2f35);
+}
+
+.nombre {
+  margin: 0 0 4px;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}

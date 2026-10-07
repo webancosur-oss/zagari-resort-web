@@ -55,6 +55,9 @@ export default function SmoothScroll() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       touchMultiplier: 1.6,
+      // Los enlaces a anclas de la misma página también se desplazan con
+      // Lenis; respeta scroll-margin-top, así nada queda bajo la barra.
+      anchors: true,
     });
 
     instancia = lenis;

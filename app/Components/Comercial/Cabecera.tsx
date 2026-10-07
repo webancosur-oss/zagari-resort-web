@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 import styles from "./comercial.module.css";
 
@@ -30,9 +31,9 @@ export default function Cabecera({ etiqueta, titulo, intro, enlace, children }: 
         {children}
       </div>
       {enlace && (
-        <a href={enlace.href} className={styles.enlace} data-reveal data-entrada="sube">
+        <Link href={enlace.href} className={styles.enlace} data-reveal data-entrada="sube">
           {enlace.label}
-        </a>
+        </Link>
       )}
     </header>
   );

@@ -1,0 +1,25 @@
+.panel {
+  background:
+    radial-gradient(80% 120% at 100% 0%, rgba(23, 168, 87, 0.12), transparent 60%),
+    var(--zg-panel);
+}
+
+.ventaja {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(18px, 2vw, 26px);
+  border-radius: 18px;
+  background: var(--zg-blanco);
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 4px;
+  border-radius: 14px;
+  background: var(--zg-verde-suave);
+  color: var(--zg-bosque);
+}

@@ -15,8 +15,14 @@ const CategoriaContext = createContext<Contexto>({
 });
 
 /** Une el botón de cada membresía con el selector del formulario de contacto. */
-export function CategoriaProvider({ children }: { children: ReactNode }) {
-  const [categoria, setCategoria] = useState<IdCategoria | "">("");
+export function CategoriaProvider({
+  children,
+  inicial = "",
+}: {
+  children: ReactNode;
+  inicial?: IdCategoria | "";
+}) {
+  const [categoria, setCategoria] = useState<IdCategoria | "">(inicial);
   return (
     <CategoriaContext.Provider value={{ categoria, elegir: setCategoria }}>
       {children}

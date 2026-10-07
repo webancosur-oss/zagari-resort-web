@@ -8,7 +8,7 @@ import Reveal from "../Reveal/Reveal";
 import { desplazarA } from "../SmoothScroll/SmoothScroll";
 import { VIDEO } from "../Landing/secciones.data";
 import { ROUTE } from "../LocationRoute/route.data";
-import { CATEGORIAS } from "../../lib/modelo";
+import { EN_EL_CAMINO } from "../../lib/contenido";
 
 import comun from "./comercial.module.css";
 import styles from "./Presentacion.module.css";
@@ -17,8 +17,8 @@ import styles from "./Presentacion.module.css";
 const POSTER = "/assets/images/heroes/recorrido-poster.jpg";
 
 const CIFRAS = [
-  { valor: String(CATEGORIAS.length), texto: "Categorías de socio" },
-  { valor: "4", texto: "Elementos que ordenan el club" },
+  { valor: "15 min", texto: "Desde la Carretera Central" },
+  { valor: "+20", texto: "Amenidades en el club" },
   { valor: `${ROUTE.distanceKm.toString().replace(".", ",")} km`, texto: "Desde San Ramón" },
 ];
 
@@ -36,30 +36,32 @@ export default function Presentacion() {
   };
 
   return (
-    <Reveal as="section" id="club" className={comun.seccion}>
+    <Reveal as="section" id="san-ramon" className={comun.seccion}>
       <div className={comun.inner}>
         <div className={`${comun.panel} ${styles.disposicion}`}>
           <div className={styles.texto}>
             <div>
               <h2 className={`display ${styles.frase}`} data-reveal data-entrada="sube">
-                Naturaleza, descanso y experiencias — <em>una misma manera</em> de vivir.
+                San Ramón — <em>la puerta de la Selva Central</em>
               </h2>
 
               <p className={styles.parrafo} data-reveal data-entrada="sube">
-                Un lugar que nace de su entorno: piscinas, cabañas, senderos y
-                espacios para compartir en San Ramón, en plena Selva Central.
+                Estamos a 15 minutos de San Ramón y de la Carretera Central, en una
+                ubicación que combina accesibilidad y belleza natural. En el camino
+                pasarás por {EN_EL_CAMINO.slice(1, 4).join(", ")} y estarás a 3 minutos
+                del mirador El Mishasho.
               </p>
 
               <a
-                href="#membresias"
+                href="#como-llegar"
                 className={comun.boton}
                 data-reveal
                 data-entrada="sube"
                 onClick={(e) => {
-                  if (desplazarA("#membresias")) e.preventDefault();
+                  if (desplazarA("#como-llegar")) e.preventDefault();
                 }}
               >
-                Ver membresías
+                Cómo llegar
               </a>
             </div>
 

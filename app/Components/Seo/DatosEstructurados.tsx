@@ -83,30 +83,43 @@ const grafo = {
       inLanguage: SITIO.idioma,
       isPartOf: { "@id": id("web") },
       about: { "@id": id("club") },
-      primaryImageOfPage: `${SITIO_URL}/assets/images/heroes/hero-tiger-poster.jpg`,
-    },
-    {
-      "@type": "FAQPage",
-      "@id": id("preguntas"),
-      inLanguage: SITIO.idioma,
-      mainEntity: PREGUNTAS.map((p) => ({
-        "@type": "Question",
-        name: p.pregunta,
-        acceptedAnswer: { "@type": "Answer", text: p.respuesta },
-      })),
+      primaryImageOfPage: `${SITIO_URL}/assets/images/heroes/zagari-hero.jpg`,
     },
   ],
 };
 
-/** JSON-LD de la portada para buscadores y motores de respuesta con IA. */
-export default function DatosEstructurados() {
+const preguntas = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": id("preguntas"),
+  url: `${SITIO_URL}/preguntas`,
+  inLanguage: SITIO.idioma,
+  isPartOf: { "@id": id("web") },
+  mainEntity: PREGUNTAS.map((p) => ({
+    "@type": "Question",
+    name: p.pregunta,
+    acceptedAnswer: { "@type": "Answer", text: p.respuesta },
+  })),
+};
+
+function JsonLd({ datos }: { datos: object }) {
   return (
     <script
       type="application/ld+json"
       // Se escapa "<" para que ningún texto pueda cerrar la etiqueta <script>.
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(grafo).replace(/</g, "\\u003c"),
+        __html: JSON.stringify(datos).replace(/</g, "\\u003c"),
       }}
     />
   );
+}
+
+/** JSON-LD de la portada para buscadores y motores de respuesta con IA. */
+export default function DatosEstructurados() {
+  return <JsonLd datos={grafo} />;
+}
+
+/** FAQPage: va en /preguntas, donde las preguntas son visibles. */
+export function DatosPreguntas() {
+  return <JsonLd datos={preguntas} />;
 }

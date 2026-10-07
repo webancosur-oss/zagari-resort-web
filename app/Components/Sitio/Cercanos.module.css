@@ -1,0 +1,42 @@
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0 24px;
+}
+
+.cabecera > header {
+  flex: 1 1 520px;
+}
+
+.cabecera > div:last-child {
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+.creditos {
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--zg-tenue);
+}
+
+.creditos summary {
+  display: inline-block;
+  min-height: 32px;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+.creditos summary:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 2px;
+}
+
+.creditos p {
+  margin: 0;
+}
+
+.creditos a {
+  color: inherit;
+}

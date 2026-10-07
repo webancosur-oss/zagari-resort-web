@@ -73,3 +73,9 @@
     transition: none;
   }
 }
+
+/* Separación entre temas en la página de preguntas. */
+.disposicion + .disposicion,
+nav + .disposicion {
+  margin-top: clamp(36px, 5vw, 64px);
+}

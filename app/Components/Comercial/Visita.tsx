@@ -9,7 +9,7 @@ import styles from "./Visita.module.css";
 
 const MINIATURAS = [
   { src: "/assets/images/cabagnas/cabagna3.jpeg", alt: "Cabaña del club entre la vegetación" },
-  { src: "/assets/images/experiences/experience3.webp", alt: "Pórtico de ingreso al club" },
+  { src: "/assets/images/experiences/portico.webp", alt: "Pórtico de ingreso al club" },
   { src: "/assets/images/experiences/experience2.webp", alt: "Bar dentro de la piscina bajo la pérgola" },
   { src: "/assets/images/experiences/experience13.webp", alt: "Piscina con cascada rodeada de vegetación" },
 ];
@@ -31,7 +31,7 @@ export default function Visita() {
           <article className={styles.destacado} data-reveal data-entrada="sube">
             <div className={styles.foto}>
               <Image
-                src="/assets/images/heroes/hero_portico.jpg"
+                src="/assets/images/heroes/portico_familia.webp"
                 alt="Familia caminando hacia el pórtico de ingreso de Zagari"
                 fill
                 sizes="(min-width: 900px) 50vw, 92vw"

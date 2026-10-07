@@ -1,0 +1,143 @@
+.buscador {
+  display: grid;
+  gap: 10px;
+  padding: clamp(14px, 1.6vw, 20px);
+  border-radius: 18px;
+  background: var(--zg-blanco);
+  box-shadow: 0 18px 50px rgba(3, 45, 32, 0.22);
+  color: var(--zg-tinta);
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.campo {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--zg-linea);
+  border-radius: 10px;
+  background: var(--zg-panel);
+  transition: border-color 200ms ease, opacity 200ms ease;
+}
+
+.campo:focus-within {
+  border-color: var(--zg-bosque);
+}
+
+.inactivo {
+  opacity: 0.5;
+}
+
+.etiqueta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--zg-tinta-suave);
+}
+
+.control {
+  width: 100%;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--zg-tinta);
+  outline: none;
+}
+
+/* El destino y el plan ocupan toda la fila en móvil; adultos y niños comparten. */
+.campo:nth-child(1),
+.campo:nth-child(2),
+.campo:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.reservar {
+  grid-column: 1 / -1;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--zg-bosque);
+  color: var(--zg-blanco);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.reservar:focus-visible,
+.llamar:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 3px;
+}
+
+.llamar {
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  gap: 6px;
+  min-height: 32px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--zg-bosque);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (min-width: 640px) {
+  .campos {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .campo:nth-child(1),
+  .campo:nth-child(2) {
+    grid-column: span 2;
+  }
+
+  .campo:nth-child(3) {
+    grid-column: span 2;
+  }
+}
+
+/* Escritorio: una sola barra, como el buscador de la referencia. */
+@media (min-width: 1100px) {
+  .campos {
+    grid-template-columns: 1.1fr 1.2fr 1.2fr 0.7fr 0.7fr auto;
+  }
+
+  .campo:nth-child(1),
+  .campo:nth-child(2),
+  .campo:nth-child(3) {
+    grid-column: auto;
+  }
+
+  .reservar {
+    grid-column: auto;
+    min-height: auto;
+  }
+
+  .llamar {
+    justify-self: end;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .reservar:hover {
+    background: var(--zg-bosque-oscuro);
+  }
+
+  .llamar:hover {
+    color: var(--zg-bosque-oscuro);
+  }
+}

@@ -7,6 +7,7 @@ import "./globals.css";
 import LandingNav from "./Components/Landing/LandingNav";
 import LandingFooter from "./Components/Landing/LandingFooter";
 import WhatsAppWidget from "./Components/WhatsAppWidget/WhatsAppWidget";
+import BotonPropietario from "./Components/Sitio/BotonPropietario";
 import ToastProvider from "./Components/ui/Toast/ToastProvider";
 import SmoothScroll from "./Components/SmoothScroll/SmoothScroll";
 import { SITIO, SITIO_URL, UBICACION } from "./lib/sitio";
@@ -122,6 +123,8 @@ export default function RootLayout({
           {children}
 
           <LandingFooter />
+
+          <BotonPropietario />
 
           <WhatsAppWidget />
         </ToastProvider>

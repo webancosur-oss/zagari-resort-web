@@ -20,12 +20,19 @@ export interface NavItem {
 }
 
 export const NAV: NavItem[] = [
-  { label: "Inicio", href: "/#inicio" },
-  { label: "Membresías", href: "/#membresias" },
-  { label: "Beneficios", href: "/#beneficios" },
-  { label: "Experiencias", href: "/#experiencias" },
-  { label: "Tu visita", href: "/#visita" },
-  { label: "Preguntas", href: "/#preguntas" },
+  { label: "Inicio", href: "/" },
+  { label: "Promociones", href: "/promociones" },
+  { label: "Destinos y cabañas", href: "/destinos" },
+  { label: "Experiencias", href: "/experiencias" },
+  { label: "Membresías", href: "/membresias" },
+];
+
+/** Enlaces del pie: el menú más las páginas que no van en él. */
+export const NAV_PIE: NavItem[] = [
+  ...NAV,
+  { label: "Lotes", href: "/lotes" },
+  { label: "Preguntas frecuentes", href: "/preguntas" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
 const A = "/assets/images/amenities";

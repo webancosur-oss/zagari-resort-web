@@ -1,7 +1,6 @@
 import {
   ACCESOS,
   AVISO_MODELO,
-  AVISO_TARIFAS,
   BENEFICIOS,
   CATEGORIAS,
   ENTRADAS,
@@ -9,9 +8,9 @@ import {
   PUNTOS,
   RESUMEN,
   SOCIO_FUNDADOR,
-  soles,
 } from "../lib/modelo";
 import { REDES, SITIO, SITIO_URL, TELEFONO, UBICACION } from "../lib/sitio";
+import { AMENIDADES, CERCANOS, DESTINOS, LOTES, CAPITULOS, TIPOS_CABANA } from "../lib/contenido";
 
 /**
  * /llms.txt: resumen en Markdown para motores de respuesta con IA.
@@ -40,11 +39,11 @@ export function GET() {
     "",
     "## Membresías",
     "",
-    `Importante: ${AVISO_TARIFAS}. ${AVISO_MODELO}`,
+    `Importante: ${AVISO_MODELO}`,
     "",
     ...CATEGORIAS.map(
       (c) =>
-        `- ${c.nombre} (${plano(soles(c.precio))} al año): ${c.queEs}. ${c.quienLaTiene} Ingreso: ${c.ingreso}. Cubre a: ${c.alcance}.`
+        `- ${c.nombre}: ${c.queEs}. ${c.quienLaTiene} Ingreso: ${c.ingreso}. Cubre a: ${c.alcance}.`
     ),
     "",
     SOCIO_FUNDADOR,
@@ -59,9 +58,35 @@ export function GET() {
     "",
     "## Entradas por día",
     "",
-    `- Adulto: ${plano(soles(ENTRADAS.adulto.precio))} (${ENTRADAS.adulto.detalle})`,
-    `- ${ENTRADAS.nino.detalle}: ${plano(soles(ENTRADAS.nino.precio))}. ${ENTRADAS.gratis}.`,
+    `- ${ENTRADAS.adulto.detalle}. ${ENTRADAS.gratis}.`,
     `- ${ENTRADAS.regla}`,
+    "",
+    "## Lotes (II etapa, preventa)",
+    "",
+    `- ${LOTES.resumen}`,
+    `- Área: desde ${LOTES.area.desde} hasta ${LOTES.area.hasta} m².`,
+    ...LOTES.ventajas.map((v) => `- ${v.titulo}: ${v.texto}`),
+    `- ${LOTES.alquiler}`,
+    "",
+    "## Promociones",
+    "",
+    ...CAPITULOS.flatMap((c) => c.grupos.map((g) => `- ${c.titulo}, ${g.titulo}: ${g.items.join(" ")}`)),
+    "",
+    "## Tipos de cabaña",
+    "",
+    ...TIPOS_CABANA.map((t) => `- ${t.nombre}: ${t.area} m², ${t.pisos} ${t.pisos === 1 ? "piso" : "pisos"}, ${t.habitaciones} ${t.habitaciones === 1 ? "habitación" : "habitaciones"}. ${t.resumen}`),
+    "",
+    "## Destinos",
+    "",
+    ...DESTINOS.map((d) => `- ${d.nombre} (${d.region})${d.estado === "proximamente" ? ", próximamente" : ""}: ${d.resumen}`),
+    "",
+    "## Amenidades",
+    "",
+    AMENIDADES.join(", ") + ".",
+    "",
+    "## Cerca del club",
+    "",
+    ...CERCANOS.map((c) => `- ${c.nombre} (${c.distancia}): ${c.texto}`),
     "",
     "## Puntos Zagari",
     "",
@@ -75,9 +100,13 @@ export function GET() {
     "## Páginas",
     "",
     `- [Inicio](${SITIO_URL}/)`,
-    `- [Membresías](${SITIO_URL}/#membresias)`,
-    `- [Preguntas frecuentes](${SITIO_URL}/#preguntas)`,
-    `- [Contacto](${SITIO_URL}/#contacto)`,
+    `- [Promociones](${SITIO_URL}/promociones)`,
+    `- [Destinos y cabañas](${SITIO_URL}/destinos)`,
+    `- [Experiencias](${SITIO_URL}/experiencias)`,
+    `- [Membresías](${SITIO_URL}/membresias)`,
+    `- [Lotes](${SITIO_URL}/lotes)`,
+    `- [Preguntas frecuentes](${SITIO_URL}/preguntas)`,
+    `- [Contacto](${SITIO_URL}/contacto)`,
     `- [Términos y condiciones](${SITIO_URL}/terminos)`,
     `- [Política de privacidad](${SITIO_URL}/privacidad)`,
   ];

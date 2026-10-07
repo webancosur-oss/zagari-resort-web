@@ -152,3 +152,15 @@
     color: var(--zg-bosque);
   }
 }
+
+.bosque .intro {
+  color: rgba(251, 248, 241, 0.78);
+}
+
+.bosque .enlace {
+  color: var(--zg-crema);
+}
+
+.bosque .titulo em {
+  color: rgba(251, 248, 241, 0.62);
+}

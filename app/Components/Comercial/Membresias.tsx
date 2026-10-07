@@ -1,18 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import type { PointerEvent } from "react";
-import { ArrowDown, ArrowRight, InfoCircle, TickCircle } from "reicon-react";
+import { useEffect, useId, useState, type PointerEvent } from "react";
+import { ArrowRight, InfoCircle, TickCircle } from "reicon-react";
 
 import Reveal from "../Reveal/Reveal";
 import { desplazarA } from "../SmoothScroll/SmoothScroll";
 import { useToast } from "../ui/Toast/ToastProvider";
 import {
   AVISO_MODELO,
-  AVISO_TARIFAS,
   BENEFICIOS,
   CATEGORIAS,
-  soles,
   type Categoria,
 } from "../../lib/modelo";
 import Beneficios from "./Beneficios";
@@ -20,10 +18,16 @@ import Cabecera from "./Cabecera";
 import { useCategoria } from "./CategoriaElegida";
 
 import comun from "./comercial.module.css";
+import sitio from "../Sitio/sitio.module.css";
 import styles from "./Membresias.module.css";
 
 // Los cuatro beneficios que más distinguen una categoría de otra.
-const CLAVE = ["Ingreso al club", "Invitados sin costo", "Restaurante, bar y market", "Cabañas"];
+const CLAVE = [
+  "Ingreso al club",
+  "Invitados sin costo",
+  "Restaurante, bar y market",
+  "Cabañas",
+];
 const DESTACADOS = BENEFICIOS.filter((b) => CLAVE.includes(b.servicio));
 
 /** Inclinación máxima de la tarjeta, en grados. */
@@ -43,8 +47,14 @@ function inclinar(e: PointerEvent<HTMLDivElement>) {
   const r = el.getBoundingClientRect();
   const x = (e.clientX - r.left) / r.width;
   const y = (e.clientY - r.top) / r.height;
-  el.style.setProperty("--ry", `${((x - 0.5) * 2 * INCLINACION).toFixed(2)}deg`);
-  el.style.setProperty("--rx", `${((0.5 - y) * 2 * INCLINACION).toFixed(2)}deg`);
+  el.style.setProperty(
+    "--ry",
+    `${((x - 0.5) * 2 * INCLINACION).toFixed(2)}deg`,
+  );
+  el.style.setProperty(
+    "--rx",
+    `${((0.5 - y) * 2 * INCLINACION).toFixed(2)}deg`,
+  );
   el.style.setProperty("--bx", `${(x * 100).toFixed(1)}%`);
   el.style.setProperty("--by", `${(y * 100).toFixed(1)}%`);
 }
@@ -61,9 +71,32 @@ const ACCION: Record<Categoria["id"], string> = {
   platino: "Consultar Platino",
 };
 
+const VISTAS = [
+  { id: "elige", nombre: "Elige tu membresía" },
+  { id: "beneficios", nombre: "Beneficios" },
+] as const;
+
+type Vista = (typeof VISTAS)[number]["id"];
+
+/** Dos vistas que se deslizan: las tarjetas de socio y la comparativa. */
 export default function Membresias() {
   const { categoria, elegir } = useCategoria();
   const { mostrar } = useToast();
+  const base = useId();
+  const [vista, setVista] = useState<Vista>("elige");
+
+  // "#beneficios" en la dirección abre directamente la comparativa.
+  useEffect(() => {
+    const leer = () => {
+      if (window.location.hash === "#beneficios") setVista("beneficios");
+    };
+    const cuadro = requestAnimationFrame(leer);
+    window.addEventListener("hashchange", leer);
+    return () => {
+      cancelAnimationFrame(cuadro);
+      window.removeEventListener("hashchange", leer);
+    };
+  }, []);
 
   const alElegir = (c: Categoria) => {
     elegir(c.id);
@@ -71,7 +104,7 @@ export default function Membresias() {
       "exito",
       c.id === "platino"
         ? "Platino es por invitación. Déjanos tus datos y un asesor te explica cómo se accede."
-        : `${c.nombre} seleccionada. Completa tus datos y un asesor te contactará.`
+        : `${c.nombre} seleccionada. Completa tus datos y un asesor te contactará.`,
     );
     desplazarA("#contacto");
   };
@@ -86,93 +119,133 @@ export default function Membresias() {
               Tu tarjeta de <em>socio</em> — elige tu categoría
             </>
           }
+          intro="Todo socio empieza en Plata u Oro según cómo llega al club, y sube de categoría con sus puntos."
         >
-          <p className={comun.aviso} role="note" data-reveal data-entrada="sube">
+          <p
+            className={comun.aviso}
+            role="note"
+            data-reveal
+            data-entrada="sube"
+          >
             <InfoCircle size={17} aria-hidden="true" />
-            {AVISO_TARIFAS}
+            Propietarios de lote Zagari: Membresía Oro el primer año sin costo.
           </p>
         </Cabecera>
 
-        <ul className={styles.lista} data-reveal data-entrada="sube">
-          {CATEGORIAS.map((c) => {
-            const activa = categoria === c.id;
-            return (
-              <li
-                key={c.id}
-                className={`${styles.plan} ${c.id === "oro" ? styles.destacada : ""} ${activa ? styles.activa : ""}`}
-              >
-                {c.id === "oro" && (
-                  <p className={styles.distintivo}>Propietarios Zagari · 1.er año sin costo</p>
-                )}
-                {/* La tarjeta física del socio: decorativa, el texto real va debajo. */}
-                <div
-                  className={`${styles.tarjeta} ${styles[c.id]}`}
-                  aria-hidden="true"
-                  onPointerMove={inclinar}
-                  onPointerLeave={soltar}
-                >
-                  <div className={styles.tarjetaArriba}>
-                    <Image
-                      src={c.id === "platino" ? "/assets/logo/zagari-logo-light.svg" : "/assets/logo/zagari-logo-dark.svg"}
-                      alt=""
-                      width={872}
-                      height={170}
-                      className={styles.logo}
-                    />
-                    <span className={styles.socio}>Socio</span>
-                  </div>
-                  <span className={styles.chip} />
-                  <div className={styles.tarjetaAbajo}>
-                    <span className={styles.metal}>{c.nombre}</span>
-                    <span className={styles.tipo}>{c.tarjeta}</span>
-                  </div>
-                </div>
+        <div
+          id="beneficios"
+          className={sitio.pestanas}
+          role="tablist"
+          aria-label="Vistas de membresías"
+          data-reveal
+          data-entrada="sube"
+        >
+          {VISTAS.map((v) => (
+            <button
+              key={v.id}
+              type="button"
+              role="tab"
+              id={`${base}-${v.id}`}
+              aria-selected={vista === v.id}
+              aria-controls={`${base}-panel`}
+              className={sitio.pestana}
+              onClick={() => setVista(v.id)}
+            >
+              {v.nombre}
+            </button>
+          ))}
+        </div>
 
-                <div className={styles.cuerpo}>
-                  <h3 className={`display ${styles.nombre}`}>Membresía {c.nombre}</h3>
-                  <p className={styles.queEs}>{c.queEs}</p>
-
-                  <p className={styles.precio}>
-                    <span className={`display ${styles.monto}`}>{soles(c.precio)}</span>
-                    <span className={styles.periodo}>al año · tarifa propuesta</span>
-                  </p>
-
-                  <ul className={styles.beneficios}>
-                    {DESTACADOS.map((b) => (
-                      <li key={b.servicio}>
-                        <TickCircle size={18} aria-hidden="true" />
-                        <span>
-                          <strong>{b.servicio}:</strong> {b[c.id]}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    type="button"
-                    className={styles.accion}
-                    aria-pressed={activa}
-                    onClick={() => alElegir(c)}
+        <div
+          key={vista}
+          id={`${base}-panel`}
+          role="tabpanel"
+          aria-labelledby={`${base}-${vista}`}
+          className={`${styles.vista} ${vista === "beneficios" ? styles.desdeDerecha : styles.desdeIzquierda}`}
+        >
+          {vista === "beneficios" ? (
+            <Beneficios />
+          ) : (
+            <ul className={styles.lista}>
+              {CATEGORIAS.map((c) => {
+                const activa = categoria === c.id;
+                return (
+                  <li
+                    key={c.id}
+                    className={`${styles.plan} ${c.id === "oro" ? styles.destacada : ""} ${activa ? styles.activa : ""}`}
                   >
-                    {ACCION[c.id]}
-                    <ArrowRight size={18} aria-hidden="true" />
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+                    {c.id === "oro" && (
+                      <p className={styles.distintivo}>
+                        Propietarios Zagari · 1.er año sin costo
+                      </p>
+                    )}
+                    {/* La tarjeta física del socio: decorativa, el texto real va debajo. */}
+                    <div
+                      className={`${styles.tarjeta} ${styles[c.id]}`}
+                      aria-hidden="true"
+                      onPointerMove={inclinar}
+                      onPointerLeave={soltar}
+                    >
+                      <div className={styles.tarjetaArriba}>
+                        <Image
+                          src={
+                            c.id === "platino"
+                              ? "/assets/logo/zagari-logo-light.svg"
+                              : "/assets/logo/zagari-logo-dark.svg"
+                          }
+                          alt=""
+                          width={872}
+                          height={170}
+                          className={styles.logo}
+                        />
+                        <span className={styles.socio}>Socio</span>
+                      </div>
+                      <span className={styles.chip} />
+                      <div className={styles.tarjetaAbajo}>
+                        <span className={styles.metal}>{c.nombre}</span>
+                        <span className={styles.tipo}>{c.tarjeta}</span>
+                      </div>
+                    </div>
 
-        <details className={styles.desplegable} id="beneficios">
-          <summary className={styles.desplegar}>
-            Ver comparativa completa de beneficios
-            <ArrowDown size={18} aria-hidden="true" className={styles.flecha} />
-          </summary>
-          <Beneficios />
-        </details>
+                    <div className={styles.cuerpo}>
+                      <h3 className={`display ${styles.nombre}`}>
+                        Membresía {c.nombre}
+                      </h3>
+                      <p className={styles.queEs}>{c.queEs}</p>
+
+                      <p className={styles.precio}>{c.quienLaTiene}</p>
+
+                      <ul className={styles.beneficios}>
+                        {DESTACADOS.map((b) => (
+                          <li key={b.servicio}>
+                            <TickCircle size={18} aria-hidden="true" />
+                            <span>
+                              <strong>{b.servicio}:</strong> {b[c.id]}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <button
+                        type="button"
+                        className={styles.accion}
+                        aria-pressed={activa}
+                        onClick={() => alElegir(c)}
+                      >
+                        {ACCION[c.id]}
+                        <ArrowRight size={18} aria-hidden="true" />
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
 
         <p className={comun.nota} data-reveal data-entrada="sube">
-          {AVISO_MODELO} Cubren al titular, su cónyuge e hijos menores de 18 años.
+          {AVISO_MODELO} Cubren al titular, su cónyuge e hijos menores de 18
+          años.
         </p>
       </div>
     </Reveal>

@@ -5,7 +5,7 @@ const CABANA = "/assets/images/cabagnas";
 
 export const FOTO = {
   hero: `${EXP}/experience1.webp`,
-  portico: `${HERO}/hero_portico.jpg`,
+  portico: `${HERO}/portico_familia.webp`,
   cabanas: `${CABANA}/cabagna1.jpeg`,
   cabanaNoche: `${HERO}/hero_cabagna.jpg`,
   cabanaFamilia: `${EXP}/experience17.webp`,
@@ -21,7 +21,7 @@ export const FOTO = {
   banquete: `${EXP}/experience7.webp`,
   celebracion: `${EXP}/experience6.webp`,
   sendero: `${HERO}/hero_image_sendero.jpg`,
-  caminata: `${EXP}/experience3.webp`,
+  caminata: `${EXP}/portico.webp`,
   mirador: `${EXP}/mirador-mishasho.jpg`,
   domo: `${AMENITY}/element-aire-domo.webp`,
   biohuerto: `${AMENITY}/element-tierra-biohuerto-mandarina.webp`,

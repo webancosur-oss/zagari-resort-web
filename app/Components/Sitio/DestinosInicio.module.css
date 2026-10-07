@@ -1,0 +1,93 @@
+.panel {
+  display: grid;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--zg-panel);
+}
+
+.foto {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--zg-piedra);
+}
+
+.imagen {
+  object-fit: cover;
+  animation: entra 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes entra {
+  from {
+    opacity: 0;
+    scale: 1.03;
+  }
+}
+
+.sello {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--zg-ambar);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--zg-tinta);
+}
+
+.cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(22px, 3.4vw, 48px);
+}
+
+.region {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--zg-bosque);
+}
+
+.nombre {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.resumen {
+  max-width: 46ch;
+  margin: 0;
+  font-size: clamp(1rem, 1.3vw, 1.08rem);
+  line-height: 1.65;
+  color: var(--zg-tinta-suave);
+}
+
+@media (min-width: 1024px) {
+  .panel {
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .foto {
+    aspect-ratio: auto;
+    min-height: 460px;
+  }
+
+  .cuerpo {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imagen {
+    animation: none;
+  }
+}

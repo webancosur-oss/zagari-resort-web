@@ -56,3 +56,13 @@ export function openGraphDe(ruta: string, titulo: string, descripcion: string) {
     images: [IMAGEN_SOCIAL],
   };
 }
+
+/** Metadatos de una página interna: título, descripción, canónica y Open Graph. */
+export function metadatosDe(ruta: string, titulo: string, descripcion: string) {
+  return {
+    title: titulo,
+    description: descripcion,
+    alternates: { canonical: ruta },
+    openGraph: openGraphDe(ruta, titulo, descripcion),
+  };
+}

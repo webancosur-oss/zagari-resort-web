@@ -279,71 +279,138 @@ export const VISITA = [
 
 const [ZAGARI, ANCOSUR, PUBLICO, EMPRESAS] = ACCESOS;
 
-/** Preguntas frecuentes. Las cifras salen de las constantes de arriba. */
-export const PREGUNTAS = [
+export interface Pregunta {
+  pregunta: string;
+  respuesta: string;
+}
+
+/**
+ * Preguntas frecuentes por tema. Sin montos: las tarifas aún no están
+ * aprobadas, así que se habla de descuentos y beneficios.
+ */
+export const GRUPOS_PREGUNTAS: { tema: string; preguntas: Pregunta[] }[] = [
   {
-    pregunta: "¿A quién cubre la membresía?",
-    respuesta: `Es familiar: titular, cónyuge e hijos menores de 18 años. Los hijos de 18 a 25 se suman pagando ${soles(HIJOS_18_A_25.precio)} al año cada uno.`,
+    tema: "Membresías",
+    preguntas: [
+      {
+        pregunta: "¿Qué es Zagari Resort Club?",
+        respuesta: RESUMEN,
+      },
+      {
+        pregunta: "¿A quién cubre la membresía?",
+        respuesta: `Es familiar: titular, cónyuge e hijos menores de 18 años. ${HIJOS_18_A_25.detalle}`,
+      },
+      {
+        pregunta: "¿Cómo empiezo si no soy propietario?",
+        respuesta: `${PUBLICO.comoEntra} Empiezas en ${PUBLICO.conQueArranca.replace(".", "")} y subes de categoría con tus puntos.`,
+      },
+      {
+        pregunta: "¿Hay membresía para empresas?",
+        respuesta: `Sí. ${EMPRESAS.comoEntra} ${EMPRESAS.conQueArranca}`,
+      },
+      {
+        pregunta: "¿Cómo se llega a Platino?",
+        respuesta: "Platino no se compra en puerta. Se alcanza por invitación, al acumular 1 000 puntos en el año como socio Oro.",
+      },
+      {
+        pregunta: "¿Cómo puedo pagar?",
+        respuesta: "En un solo pago al año, que es la forma más simple, o en tres cuotas con tarjeta. Si renuevas antes de que venza tu membresía, pagas 10 % menos y recibes 50 puntos de regalo.",
+      },
+      {
+        pregunta: "¿Me cobrarán la renovación automáticamente?",
+        respuesta: "No. En el mes 11 recibes el aviso de renovación con tu descuento. Si no renuevas, la membresía simplemente vence, sin cargos. El primer año gratuito de los propietarios no pide tarjeta.",
+      },
+      {
+        pregunta: "¿Se acumula el descuento de socio con las promociones?",
+        respuesta: "No. Cuando coinciden una promoción o un precio de temporada y el descuento de tu categoría, se aplica el mayor de los dos.",
+      },
+    ],
   },
   {
-    pregunta: "¿Puedo ir sin ser socio?",
-    respuesta: `Sí, con una entrada por el día: adultos ${soles(ENTRADAS.adulto.precio)} y niños de 4 a 12 años ${soles(ENTRADAS.nino.precio)}. ${ENTRADAS.gratis}. Incluye piscinas, canchas y zonas comunes. ${ENTRADAS.sinPuntos}`,
+    tema: "Propietarios",
+    preguntas: [
+      {
+        pregunta: "Soy propietario de un lote Zagari, ¿qué recibo?",
+        respuesta: `${ZAGARI.comoEntra} ${ZAGARI.conQueArranca} ${SOCIO_FUNDADOR}`,
+      },
+      {
+        pregunta: "Compré en otro proyecto ANCOSUR, ¿qué recibo?",
+        respuesta: `${ANCOSUR.comoEntra} ${ANCOSUR.conQueArranca}`,
+      },
+      {
+        pregunta: "¿De qué tamaño son los lotes?",
+        respuesta: "Los lotes de la segunda etapa van desde 234 hasta 525 m². La primera etapa ya se vendió.",
+      },
+      {
+        pregunta: "¿Cómo puedo pagar mi lote?",
+        respuesta: "Con precios de preventa y crédito directo: pagas hasta en 18 meses. Un asesor te acompaña de forma personalizada desde la elección del lote.",
+      },
+      {
+        pregunta: "¿Puedo construir y alquilar una cabaña en mi lote?",
+        respuesta: "Sí. Puedes construir una cabaña tipo lodge de 1, 2 o 3 habitaciones y alquilarla en plataformas como Airbnb, para que tu lote genere ingresos.",
+      },
+    ],
   },
   {
-    pregunta: "¿Cuánto paga un invitado adicional?",
-    respuesta: `Depende de la categoría del socio: ${ENTRADAS.invitadoAdicional
-      .map((i) => `${i.categoria} ${soles(i.precio)}`)
-      .join(", ")}. ${ENTRADAS.regla}`,
+    tema: "Visitas e invitados",
+    preguntas: [
+      {
+        pregunta: "¿Puedo ir sin ser socio?",
+        respuesta: `Sí, con una entrada por el día, que incluye piscinas, canchas y zonas comunes. ${ENTRADAS.gratis}. ${ENTRADAS.sinPuntos}`,
+      },
+      {
+        pregunta: "¿Puedo llevar invitados?",
+        respuesta: `Cada categoría incluye invitados sin costo al año: 2 en Plata, 6 en Oro y 12 en Platino. Los invitados adicionales tienen descuento en Oro y Platino. ${ENTRADAS.regla}`,
+      },
+      {
+        pregunta: "¿Puedo quedarme a dormir?",
+        respuesta: "Sí, en las cabañas de alojamiento del club. Los socios tienen descuento según su categoría: 10 % en Plata, 25 % en Oro y 40 % con salida tardía en Platino.",
+      },
+    ],
   },
   {
-    pregunta: "Soy propietario de un lote Zagari, ¿qué recibo?",
-    respuesta: `${ZAGARI.comoEntra} ${ZAGARI.conQueArranca} Desde el segundo año pagas ${soles(ZAGARI.renovacion ?? 0)} al año. ${SOCIO_FUNDADOR}`,
+    tema: "Puntos Zagari",
+    preguntas: [
+      {
+        pregunta: "¿Cómo gano puntos?",
+        respuesta: `${PUNTOS.ganar.map((g) => `${g.accion}: ${g.puntos}`).join(". ")}.`,
+      },
+      {
+        pregunta: "¿En qué se canjean los puntos?",
+        respuesta: `Cada 100 puntos son S/ 10 de saldo para usar adentro. Se canjean por ${PUNTOS.canjes
+          .map((c) => `${c.por.charAt(0).toLowerCase()}${c.por.slice(1)}`)
+          .join(", ")}.`,
+      },
+      {
+        pregunta: "¿Mis puntos vencen?",
+        respuesta: "No vencen mientras tu membresía esté activa. Y nadie pierde puntos por no venir.",
+      },
+      {
+        pregunta: "¿Puedo subir de categoría antes de la renovación?",
+        respuesta: SUBIR_ANTES,
+      },
+    ],
   },
   {
-    pregunta: "Compré en otro proyecto ANCOSUR, ¿qué recibo?",
-    respuesta: `${ANCOSUR.comoEntra} ${ANCOSUR.conQueArranca} Desde el segundo año pagas ${soles(ANCOSUR.renovacion ?? 0)} al año.`,
-  },
-  {
-    pregunta: "¿Cómo empiezo si no soy propietario?",
-    respuesta: `${PUBLICO.comoEntra} Empiezas en ${PUBLICO.conQueArranca.replace(".", "")} y subes de categoría con tus puntos.`,
-  },
-  {
-    pregunta: "¿Hay membresía para empresas?",
-    respuesta: `Sí. ${EMPRESAS.comoEntra} ${EMPRESAS.conQueArranca}`,
-  },
-  {
-    pregunta: "¿Cómo puedo pagar?",
-    respuesta: FORMAS_DE_PAGO.slice(0, 3)
-      .map((f) => `${f.titulo}: ${f.detalle.charAt(0).toLowerCase()}${f.detalle.slice(1)}`)
-      .join(" "),
-  },
-  {
-    pregunta: "¿Me cobrarán la renovación automáticamente?",
-    respuesta: "No. En el mes 11 recibes el aviso de renovación con tu descuento. Si no renuevas, la membresía simplemente vence, sin cargos. El primer año gratuito de los propietarios no pide tarjeta.",
-  },
-  {
-    pregunta: "¿En qué se canjean los puntos?",
-    respuesta: `Cada punto vale S/ 0,10. Se canjean por ${PUNTOS.canjes
-      .map((c) => `${c.por.charAt(0).toLowerCase()}${c.por.slice(1)} (${c.cuesta})`)
-      .join(", ")}.`,
-  },
-  {
-    pregunta: "¿Mis puntos vencen?",
-    respuesta: "No vencen mientras tu membresía esté activa. Y nadie pierde puntos por no venir.",
-  },
-  {
-    pregunta: "¿Puedo subir de categoría antes de la renovación?",
-    respuesta: SUBIR_ANTES,
-  },
-  {
-    pregunta: "¿Cómo se llega a Platino?",
-    respuesta: "Platino no se compra en puerta. Se alcanza por invitación, al acumular 1 000 puntos en el año como socio Oro.",
-  },
-  {
-    pregunta: "¿Se acumula el descuento de socio con las promociones?",
-    respuesta: "No. Cuando coinciden una promoción o un precio de temporada y el descuento de tu categoría, se aplica el mayor de los dos.",
+    tema: "Ubicación",
+    preguntas: [
+      {
+        pregunta: "¿Dónde está Zagari Resort Club?",
+        respuesta: "En el sector San Jacinto y Chincana, San Ramón, Chanchamayo (Junín), a unos 15 minutos de la ciudad de San Ramón y de la Carretera Central.",
+      },
+      {
+        pregunta: "¿Qué hay cerca del club?",
+        respuesta: "En el camino pasas por Fundo Selenita, la Iglesia y la Escuela de Chincana, y estás a 3 minutos del mirador El Mishasho. Cerca están la catarata El Tirol, el puente Kimiri y las cataratas Bayoz y Velo de la Novia.",
+      },
+      {
+        pregunta: "¿Habrá otros destinos?",
+        respuesta: "Sí. Oxapampa es el próximo destino de Zagari Resort Club. Puedes dejar tus datos para enterarte primero de su apertura.",
+      },
+    ],
   },
 ];
+
+export const PREGUNTAS: Pregunta[] = GRUPOS_PREGUNTAS.flatMap((g) => g.preguntas);
 
 /** "S/ 1 690": espacios no separables (Instrument Serif no tiene el espacio fino). */
 export function soles(monto: number): string {

@@ -1,0 +1,82 @@
+.hero {
+  position: relative;
+  padding-bottom: clamp(24px, 4vw, 48px);
+  background: var(--zg-blanco);
+}
+
+.escena {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(520px, calc(100svh - var(--alto-nav, 72px) - 120px), 760px);
+  overflow: hidden;
+  background: var(--zg-bosque-profundo);
+}
+
+.imagen {
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+.velo {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(3, 45, 32, 0.1) 0%, rgba(3, 45, 32, 0) 35%),
+    linear-gradient(0deg, rgba(3, 45, 32, 0.78) 0%, rgba(3, 45, 32, 0.25) 45%, rgba(3, 45, 32, 0) 70%);
+}
+
+.texto {
+  position: relative;
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+  /* Deja sitio para el buscador, que se monta sobre el borde inferior. */
+  padding: 0 clamp(16px, 4vw, 64px) clamp(150px, 16vw, 120px);
+  color: var(--zg-blanco);
+}
+
+.lugar {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.titulo {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(2.6rem, 7vw, 6rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.parrafo {
+  max-width: 40ch;
+  margin: 14px 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+}
+
+/* Sin z-index: no crea contexto de apilamiento, así la hoja del calendario
+   en móvil queda sobre la barra de navegación y WhatsApp. */
+.barra {
+  position: relative;
+  width: 100%;
+  max-width: 1680px;
+  margin: clamp(-120px, -10vw, -96px) auto 0;
+  padding: 0 clamp(16px, 4vw, 64px);
+}
+
+@media (max-width: 639px) {
+  .texto {
+    padding-bottom: 120px;
+  }
+
+  .barra {
+    margin-top: -96px;
+  }
+}
