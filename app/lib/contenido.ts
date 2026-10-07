@@ -481,7 +481,10 @@ export interface Capitulo {
   texto: string;
   grupos: { titulo: string; items: string[] }[];
   fotos: [Foto, Foto];
-  acciones: { label: string; href: string; externo?: boolean }[];
+  acciones: { label: string; href: string; externo?: boolean; destacada?: boolean }[];
+  /** Frase corta que invita a dar el paso, sobre las cifras. */
+  gancho?: string;
+  cifras?: { valor: string; texto: string }[];
 }
 
 export const CAPITULOS: Capitulo[] = [
@@ -490,6 +493,12 @@ export const CAPITULOS: Capitulo[] = [
     titulo: "Por ser propietario",
     remate: "tu lote abre la puerta del club",
     texto: "Quien confía en Zagari desde el inicio entra al club desde el primer día, con beneficios que no vencen.",
+    gancho: "Invierte en tu lote, vive como socio",
+    cifras: [
+      { valor: "234–525 m²", texto: "Lotes en preventa" },
+      { valor: "18 meses", texto: "Crédito directo" },
+      { valor: "1.er año", texto: "Oro sin costo" },
+    ],
     grupos: [
       {
         titulo: "Propietarios de lote Zagari",
@@ -511,7 +520,7 @@ export const CAPITULOS: Capitulo[] = [
       { src: "/assets/images/lotes/domos.webp", alt: "Cabañas con domo entre palmeras" },
     ],
     acciones: [
-      { label: "Conoce los lotes", href: "/lotes" },
+      { label: "Quiero ser propietario", href: "/lotes", destacada: true },
       {
         label: "Soy propietario ANCOSUR",
         href: whatsapp("Hola, soy propietario de un proyecto ANCOSUR y quiero activar mi membresía Plata en Zagari Resort Club."),

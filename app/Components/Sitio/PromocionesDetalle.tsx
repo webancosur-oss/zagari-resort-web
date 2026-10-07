@@ -61,6 +61,20 @@ export default function PromocionesDetalle() {
                   {c.texto}
                 </p>
 
+                {c.cifras && (
+                  <div className={styles.inversion} data-reveal data-entrada="sube">
+                    {c.gancho && <p className={styles.gancho}>{c.gancho}</p>}
+                    <dl className={styles.cifras}>
+                      {c.cifras.map((x) => (
+                        <div key={x.texto}>
+                          <dt>{x.texto}</dt>
+                          <dd className="display">{x.valor}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                )}
+
                 {c.grupos.map((g) => (
                   <div key={g.titulo} className={styles.grupo} data-reveal data-entrada="sube">
                     <h3 className={styles.grupoTitulo}>{g.titulo}</h3>
@@ -88,6 +102,11 @@ export default function PromocionesDetalle() {
                         {a.label}
                         <ArrowUpRight size={18} aria-hidden="true" />
                       </a>
+                    ) : a.destacada ? (
+                      <Link key={a.label} href={a.href} className={styles.destacada}>
+                        {a.label}
+                        <ArrowRight size={18} aria-hidden="true" />
+                      </Link>
                     ) : (
                       <Link key={a.label} href={a.href} className={j === 0 ? comun.boton : styles.secundario}>
                         {a.label}

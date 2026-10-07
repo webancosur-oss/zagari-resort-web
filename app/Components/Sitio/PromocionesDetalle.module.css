@@ -230,11 +230,157 @@
   .alterno .fotos {
     order: 2;
   }
+
+  /* Las fotos acompañan desde arriba cuando el texto es largo. */
+  .fotos {
+    align-self: start;
+    position: sticky;
+    top: calc(var(--alto-nav, 72px) + 80px);
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
   .indice a:hover,
   .secundario:hover {
     background: var(--zg-verde-suave);
+  }
+}
+
+/* ── Invitación a ser propietario ── */
+.inversion {
+  display: grid;
+  gap: 12px;
+  padding: clamp(16px, 2vw, 22px);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(23, 168, 87, 0.16), transparent 60%),
+    var(--zg-bosque-profundo);
+  color: var(--zg-crema);
+}
+
+.gancho {
+  margin: 0;
+  font-family: var(--font-display), "Inter", system-ui, sans-serif;
+  font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* El espectro del felino subraya la frase. */
+.gancho::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 3px;
+  margin-top: 8px;
+  border-radius: 3px;
+  background: var(--zg-espectro);
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.cifras div {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.cifras dt {
+  font-size: 12px;
+  color: rgba(251, 248, 241, 0.7);
+}
+
+.cifras dd {
+  margin: 2px 0 0;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--zg-blanco);
+}
+
+/* Botón distintivo: borde con el espectro de Zagari y un brillo que pasa. */
+.destacada {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--zg-bosque), var(--zg-bosque)) padding-box,
+    var(--zg-espectro) border-box;
+  box-shadow: 0 10px 26px rgba(13, 107, 71, 0.32);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--zg-blanco);
+  text-decoration: none;
+  transition: translate 240ms ease, box-shadow 240ms ease;
+}
+
+.destacada::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+  translate: -120% 0;
+  animation: brillo 3.6s ease-in-out 1.2s infinite;
+  pointer-events: none;
+}
+
+@keyframes brillo {
+  0%,
+  60% {
+    translate: -120% 0;
+  }
+
+  100% {
+    translate: 120% 0;
+  }
+}
+
+.destacada svg {
+  transition: translate 240ms ease;
+}
+
+.destacada:focus-visible {
+  outline: 2px solid var(--zg-bosque);
+  outline-offset: 3px;
+}
+
+@media (max-width: 479px) {
+  .cifras {
+    grid-template-columns: 1fr;
+  }
+
+  .cifras div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .destacada:hover {
+    translate: 0 -2px;
+    box-shadow: 0 14px 32px rgba(13, 107, 71, 0.4);
+  }
+
+  .destacada:hover svg {
+    translate: 4px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .destacada::after {
+    animation: none;
   }
 }
