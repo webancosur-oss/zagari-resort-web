@@ -8,12 +8,14 @@ import Visita from "./Components/Comercial/Visita";
 import Preguntas from "./Components/Comercial/Preguntas";
 import Contacto from "./Components/Comercial/Contacto";
 import LocationRoute from "./Components/LocationRoute/LocationRoute";
+import DatosEstructurados from "./Components/Seo/DatosEstructurados";
 
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
     <main className={styles.page}>
+      <DatosEstructurados />
       <CategoriaProvider>
         <LandingHero />
         <Presentacion />

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Inter_Tight } from "next/font/google";
 
 import "lenis/dist/lenis.css";
@@ -9,6 +9,7 @@ import LandingFooter from "./Components/Landing/LandingFooter";
 import WhatsAppWidget from "./Components/WhatsAppWidget/WhatsAppWidget";
 import ToastProvider from "./Components/ui/Toast/ToastProvider";
 import SmoothScroll from "./Components/SmoothScroll/SmoothScroll";
+import { SITIO, SITIO_URL, UBICACION } from "./lib/sitio";
 
 const cuerpo = Inter({
   subsets: ["latin"],
@@ -33,26 +34,67 @@ const display = Inter_Tight({
  */
 const MARCA_MOVIMIENTO = `(function(){try{if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("motion")}catch(e){}})()`;
 
-const TITULO = "Zagari Resort Club · Membresías en San Ramón, Selva Central";
-const DESCRIPCION =
-  "Club privado de naturaleza, descanso y experiencias en San Ramón, Chanchamayo. Membresías propuestas Plata, Oro y Platino, sus beneficios y los Puntos Zagari.";
-
-// Sin canonical ni imagen OG hasta tener la URL pública: ambas la necesitan.
 export const metadata: Metadata = {
-  title: TITULO,
-  description: DESCRIPCION,
+  metadataBase: new URL(SITIO_URL),
+  title: {
+    default: SITIO.titulo,
+    template: `%s | ${SITIO.nombre}`,
+  },
+  description: SITIO.descripcion,
+  applicationName: SITIO.nombre,
+  keywords: [
+    "Zagari Resort Club",
+    "club privado San Ramón",
+    "resort Chanchamayo",
+    "Selva Central",
+    "membresía club de campo",
+    "piscina borde infinito San Ramón",
+    "cabañas Chanchamayo",
+    "Junín Perú",
+  ],
+  authors: [{ name: "MORO CAPITAL S.A.C." }],
+  publisher: "MORO CAPITAL S.A.C.",
+  category: "travel",
+  alternates: { canonical: "/" },
+  // iOS Safari convierte en enlace tel: los números largos (como el RUC del
+  // pie) antes de que React hidrate, y el HTML deja de coincidir. Los
+  // teléfonos que deben poder pulsarse ya son enlaces explícitos.
+  formatDetection: { telephone: false, address: false, email: false },
   openGraph: {
-    title: TITULO,
-    description: DESCRIPCION,
     type: "website",
     locale: "es_PE",
-    siteName: "Zagari Resort Club",
+    url: "/",
+    siteName: SITIO.nombre,
+    title: SITIO.titulo,
+    description: SITIO.descripcion,
   },
   twitter: {
-    card: "summary",
-    title: TITULO,
-    description: DESCRIPCION,
+    card: "summary_large_image",
+    title: SITIO.titulo,
+    description: SITIO.descripcion,
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  // Etiquetas geográficas para buscadores locales.
+  other: {
+    "geo.region": UBICACION.region,
+    "geo.placename": UBICACION.lugar,
+    "geo.position": `${UBICACION.latitud};${UBICACION.longitud}`,
+    ICBM: `${UBICACION.latitud}, ${UBICACION.longitud}`,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0d6b47",
 };
 
 export default function RootLayout({
@@ -64,7 +106,7 @@ export default function RootLayout({
     // MARCA_MOVIMIENTO añade "motion" a <html> antes de hidratar: la
     // diferencia de className es intencionada. Solo afecta a este elemento.
     <html
-      lang="es"
+      lang="es-PE"
       className={`${cuerpo.variable} ${display.variable}`}
       suppressHydrationWarning
     >

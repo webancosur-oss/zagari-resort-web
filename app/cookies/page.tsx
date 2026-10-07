@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 
+import { openGraphDe } from "../lib/sitio";
+
 import LegalPage from "../legal/LegalPage";
 import { EMPRESA } from "../legal/empresa";
 
 export const metadata: Metadata = {
-  title: "Política de cookies | Zagari Resort Club",
+  title: "Política de cookies",
   description:
     "Qué cookies utiliza el sitio de Zagari Resort Club y cómo gestionarlas.",
+  alternates: { canonical: "/cookies" },
+  openGraph: openGraphDe(
+    "/cookies",
+    "Política de cookies",
+    "Qué cookies utiliza el sitio de Zagari Resort Club y cómo gestionarlas."
+  ),
 };
 
 export default function Cookies() {

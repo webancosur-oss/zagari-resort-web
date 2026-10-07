@@ -33,6 +33,13 @@ export function desplazarA(selector: string): boolean {
   return true;
 }
 
+/** Detiene o reanuda el desplazamiento de la página (p. ej., bajo una vista a pantalla completa). */
+export function bloquearDesplazamiento(bloquear: boolean) {
+  document.documentElement.style.overflow = bloquear ? "hidden" : "";
+  if (bloquear) instancia?.stop();
+  else instancia?.start();
+}
+
 /**
  * Único punto de integración entre Lenis y GSAP.
  * Ningún otro componente debe instanciar Lenis ni tocar el ticker.

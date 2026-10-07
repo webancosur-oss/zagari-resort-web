@@ -48,6 +48,10 @@
   text-wrap: pretty;
 }
 
+.visor {
+  position: relative;
+}
+
 .stage {
   position: relative;
 
@@ -69,13 +73,9 @@
 
   transform-origin: center;
 
-  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-
+  /* La mueve el bucle de animación, sin transición CSS: una transición que
+     se reinicia en cada fotograma produce tirones. */
   will-change: transform;
-}
-
-.camaraActiva {
-  transition: transform 120ms linear;
 }
 
 .map {
@@ -168,7 +168,7 @@
     color 240ms ease;
 }
 
-.controlPrimary {
+.control.controlPrimary {
   background: var(--zg-bosque);
   border-color: var(--zg-bosque);
   color: var(--zg-blanco);
@@ -180,9 +180,15 @@
   cursor: default;
 }
 
+/* Interruptores activos: fondo verde suave, legible y distinto del principal. */
 .control[aria-pressed="true"] {
+  background: var(--zg-verde-suave);
   border-color: var(--zg-bosque);
-  color: var(--zg-bosque);
+  color: var(--zg-bosque-oscuro);
+}
+
+.control:active:not(:disabled) {
+  scale: 0.98;
 }
 
 .control:focus-visible {
@@ -192,11 +198,17 @@
 
 @media (hover: hover) and (pointer: fine) {
 
-  .control:hover {
-    border-color: var(--zg-tinta);
+  .control:hover:not(:disabled) {
+    background: var(--zg-panel);
+    border-color: rgba(23, 33, 28, 0.28);
   }
 
-  .controlPrimary:hover {
+  .control[aria-pressed="true"]:hover {
+    background: #cdeedb;
+    border-color: var(--zg-bosque);
+  }
+
+  .control.controlPrimary:hover {
     background: var(--zg-bosque-oscuro);
     border-color: var(--zg-bosque-oscuro);
     color: var(--zg-blanco);
@@ -209,31 +221,33 @@
     aspect-ratio: 4 / 3;
   }
 
-  .overlay {
-    width: 133.33%;
-    height: 100%;
-
-    left: 50%;
-
-    transform: translateX(-50%);
+  /* 16:10 dentro de un 4:3 de la misma altura: 133,33 % de ancho, centrado. */
+  .camara {
+    inset: 0 auto;
+    left: -16.6667%;
+    width: 133.3333%;
   }
 
+  /* Dos columnas y la acción principal a todo el ancho: cinco botones
+     apilados ocupaban más que el propio mapa. */
   .controls {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
 
   .control {
     width: 100%;
+    padding: 0 10px;
+    text-align: center;
   }
+
+  .control.controlPrimary {
+    grid-column: 1 / -1;
+  }
+
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-  .camara,
-  .camaraActiva {
-    transition: none;
-  }
-}
 
 /* ── Ruta ── */
 .borde,
@@ -309,6 +323,18 @@
   }
 }
 
+/* Con la cámara siguiendo a la van, los rótulos se moverían bajo la ficha de
+   distancia: solo tienen sentido en la vista general. */
+.etiquetaInicio,
+.etiquetaFin {
+  transition: opacity 300ms ease;
+}
+
+.siguiendo .etiquetaInicio,
+.siguiendo .etiquetaFin {
+  opacity: 0;
+}
+
 .etiquetaInicio rect,
 .etiquetaFin rect {
   filter: drop-shadow(0 2px 6px rgba(23, 33, 28, 0.25));
@@ -356,8 +382,8 @@
 
 .atribucion {
   position: absolute;
-  top: 8px;
   right: 8px;
+  bottom: 12px;
   margin: 0;
   padding: 2px 6px;
   border-radius: 4px;
@@ -381,4 +407,213 @@
     animation: none;
     opacity: 0.35;
   }
+}
+
+/* Móvil. Va al final: a igual especificidad gana la última regla, y las
+   bases de .info y .atribucion están definidas más arriba. El destino cae
+   abajo a la izquierda, así que la ficha sube y se acorta. Igual en un
+   teléfono en horizontal, donde el mapa también es pequeño. */
+@media (max-width: 599px), (orientation: landscape) and (max-height: 560px) {
+  .info {
+    top: 8px;
+    bottom: auto;
+    left: 8px;
+    padding: 5px 9px;
+    font-size: 11.5px;
+  }
+
+  .infoExtra {
+    display: none;
+  }
+
+  .atribucion {
+    bottom: 10px;
+    font-size: 9px;
+  }
+}
+
+/* ── Aviso de girar el teléfono: dentro del mapa, no a pantalla completa ── */
+.girar {
+  display: none;
+}
+
+@media (max-width: 699.98px) and (orientation: portrait) {
+  .girar {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
+    background: rgba(23, 33, 28, 0.42);
+    backdrop-filter: blur(3px);
+    color: var(--zg-blanco);
+    text-align: center;
+  }
+}
+
+.girarIcono {
+  flex: none;
+  animation: girarIcono 2.6s ease-in-out infinite;
+}
+
+@keyframes girarIcono {
+  0%,
+  25% {
+    rotate: 0deg;
+  }
+
+  55%,
+  100% {
+    rotate: -90deg;
+  }
+}
+
+.girarTexto {
+  max-width: 24ch;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.girarCerrar {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--zg-blanco);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.girarCerrar:focus-visible {
+  outline: 2px solid var(--zg-blanco);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .girarIcono {
+    animation: none;
+    rotate: -90deg;
+  }
+}
+
+/* Teléfono en horizontal: el mapa se ajusta al alto de la pantalla para
+   verse entero sin desplazarse, y los controles pasan a una columna de
+   iconos dentro del mapa. Mantiene su proporción, de la que dependen las
+   coordenadas de la ruta y de la cámara. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .visor {
+    width: min(100%, calc((100svh - var(--alto-nav, 64px) - 24px) * 1.6));
+    margin-inline: auto;
+  }
+
+  .controls {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    translate: 0 -50%;
+  }
+
+  .control {
+    width: 38px;
+    min-height: 38px;
+    height: 38px;
+    padding: 0;
+    border-color: rgba(23, 33, 28, 0.12);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 2px 8px rgba(23, 33, 28, 0.16);
+    backdrop-filter: blur(6px);
+  }
+
+  /* El texto sigue ahí para lectores de pantalla. */
+  .textoControl {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* La atribución sube para no quedar bajo la columna de iconos. */
+  .atribucion {
+    right: 54px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 599px) {
+  .visor {
+    width: min(100%, calc((100svh - var(--alto-nav, 64px) - 24px) * 4 / 3));
+  }
+}
+
+/* ── Pantalla completa al girar el teléfono ── */
+.controlPantalla {
+  display: none;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .control.controlPantalla {
+    display: inline-flex;
+  }
+}
+
+/* La entrada de la sección deja transform y filter, que atraparían al
+   visor fijo dentro de la sección en lugar de la pantalla. */
+.seccionCompleta {
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Encima de la barra de navegación y de WhatsApp. El mapa conserva su
+   proporción y se centra; las bandas laterales alojan los controles. */
+.visor.completa {
+  position: fixed;
+  inset: 0;
+  z-index: 1150;
+  display: grid;
+  place-items: center;
+  width: auto;
+  margin: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+  background: var(--zg-tinta);
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+
+.completa .stage {
+  width: min(100%, 100dvh * 1.6);
+  margin: 0;
+  aspect-ratio: 1200 / 750;
+  border-radius: 0;
+}
+
+.completa .camara {
+  inset: 0;
+  width: auto;
+}
+
+.completa .controls {
+  right: max(10px, env(safe-area-inset-right));
+}
+
+/* Los controles quedan en la banda lateral: los créditos vuelven a la esquina. */
+.completa .atribucion {
+  right: 8px;
 }

@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 
+import { openGraphDe } from "../lib/sitio";
+
 import LegalPage from "../legal/LegalPage";
 import { EMPRESA } from "../legal/empresa";
 
 export const metadata: Metadata = {
-  title: "Política de privacidad | Zagari Resort Club",
+  title: "Política de privacidad",
   description:
     "Cómo trata Zagari Resort Club los datos personales recogidos a través de su sitio web, conforme a la Ley N.° 29733.",
+  alternates: { canonical: "/privacidad" },
+  openGraph: openGraphDe(
+    "/privacidad",
+    "Política de privacidad",
+    "Cómo trata Zagari Resort Club los datos personales recogidos a través de su sitio web, conforme a la Ley N.° 29733."
+  ),
 };
 
 export default function Privacidad() {

@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 
+import { openGraphDe } from "../lib/sitio";
+
 import LegalPage from "../legal/LegalPage";
 import { EMPRESA } from "../legal/empresa";
 
 export const metadata: Metadata = {
-  title: "Términos y condiciones | Zagari Resort Club",
+  title: "Términos y condiciones",
   description:
     "Condiciones de uso del sitio web y de las membresías de Zagari Resort Club, operado por MORO CAPITAL S.A.C.",
+  alternates: { canonical: "/terminos" },
+  openGraph: openGraphDe(
+    "/terminos",
+    "Términos y condiciones",
+    "Condiciones de uso del sitio web y de las membresías de Zagari Resort Club, operado por MORO CAPITAL S.A.C."
+  ),
 };
 
 export default function Terminos() {
